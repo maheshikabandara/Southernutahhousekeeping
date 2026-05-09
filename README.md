@@ -1,1 +1,11 @@
-# repo-template
+
+  # Code frames
+
+  This is a code bundle for Code frames. The original project is available at https://www.figma.com/design/CB19QtU19vr8DV450JkEHa/Code-frames.
+
+  ## Running the code
+
+  Run `npm i` to install the dependencies.
+
+  Run `npm run dev` to start the development server.
+  
