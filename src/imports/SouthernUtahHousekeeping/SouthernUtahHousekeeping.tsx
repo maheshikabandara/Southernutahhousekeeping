@@ -12,7 +12,7 @@ import imgFrame8 from "./80d70411b91062ea6bd0759de58f1e807eaa4251.png";
 import imgFrame33 from "./9d3e7c3693f6007709afcf8cf4b622db12a3ab44.png";
 import imgAreas from "./8fd18d26ce2cf7c41459f9f71d7faa1b26bd5e0f.png";
 
-const BOOKING_LINK = "https://cal.com/mahe-bandara-dvwcve/cleaning";
+const BOOKING_LINK = "https://cal.com/mahe-bandara-dvwcve";
 
 function Frame2() {
   return (
@@ -297,7 +297,7 @@ function Frame24() {
         <CheckListItem text="Kitchen and bathroom sanitizing" />
         <CheckListItem text="Detailed home refreshes" />
       </div>
-      <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
+      <a href="https://cal.com/mahe-bandara-dvwcve/luxury-housekeeping" target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
         <p className="font-['Noto_Sans:Medium',sans-serif] font-medium text-[#fdfdfd] text-[14px]">
           Book a Cleaning
         </p>
@@ -337,7 +337,7 @@ function Frame31() {
           <CheckListItem text="Guest ready presentation" />
           <CheckListItem text="Reliable scheduling" />
         </div>
-        <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
+        <a href="https://cal.com/mahe-bandara-dvwcve/airbnb-turnovers" target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
           <p className="font-['Noto_Sans:Medium',sans-serif] font-medium text-[#fdfdfd] text-[14px]">
             Book a Cleaning
           </p>
@@ -369,7 +369,7 @@ function Frame42() {
           <CheckListItem text="Floor cleaning" />
           <CheckListItem text="Full property refresh" />
         </div>
-        <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
+        <a href="https://cal.com/mahe-bandara-dvwcve/move-in-move-out-cleans" target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
           <p className="font-['Noto_Sans:Medium',sans-serif] font-medium text-[#fdfdfd] text-[14px]">
             Book a Cleaning
           </p>
@@ -400,7 +400,7 @@ function Frame52() {
           <CheckListItem text="Sanitized workspaces" />
           <CheckListItem text="Professional presentation" />
         </div>
-        <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
+        <a href="https://cal.com/mahe-bandara-dvwcve/commercial-cleaning" target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
           <p className="font-['Noto_Sans:Medium',sans-serif] font-medium text-[#fdfdfd] text-[14px]">
             Book a Cleaning
           </p>
@@ -432,7 +432,7 @@ function Frame61() {
           <CheckListItem text="Detailed kitchens" />
           <CheckListItem text="Bathroom deep scrubbing" />
         </div>
-        <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
+        <a href="https://cal.com/mahe-bandara-dvwcve/deep-cleaning" target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
           <p className="font-['Noto_Sans:Medium',sans-serif] font-medium text-[#fdfdfd] text-[14px]">
             Book a Cleaning
           </p>
@@ -744,8 +744,8 @@ function Footer() {
             <div className="bg-white/5 border border-white/10 rounded-xl p-4 mt-2 w-full max-w-[260px]">
                <p className="font-['Inter:Semi_Bold',sans-serif] font-semibold text-[12px] text-white/40 mb-3">Working Hours</p>
                <div className="flex flex-col gap-2 text-[12px] text-white/60">
-                  <div className="flex justify-between"><span>Mon – Fri</span><span>8:00 AM – 6:00 PM</span></div>
-                  <div className="flex justify-between"><span>Saturday</span><span>8:00 AM – 3:00 PM</span></div>
+                  <div className="flex justify-between"><span>Mon - Fri</span><span>8:00 AM - 6:00 PM</span></div>
+                  <div className="flex justify-between"><span>Saturday</span><span>8:00 AM - 3:00 PM</span></div>
                   <div className="flex justify-between"><span>Sunday</span><span className="text-[#52b788]">Closed</span></div>
                </div>
             </div>
