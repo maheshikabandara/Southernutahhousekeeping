@@ -15,6 +15,28 @@ import imgAreas from "./8fd18d26ce2cf7c41459f9f71d7faa1b26bd5e0f.png";
 
 const BOOKING_LINK = "https://cal.com/mahe-bandara-dvwcve";
 
+// --- Custom Hook for Scroll Animations ---
+function useScrollReveal() {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.15 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return { ref, isVisible };
+}
+
 // --- Service Card Wrapper with Stacking & Scaling Logic ---
 function ServiceCardWrapper({ children, index }) {
   const containerRef = useRef(null);
@@ -46,7 +68,7 @@ function ServiceCardWrapper({ children, index }) {
   return (
     <div
       ref={containerRef}
-      // Mobile වලදී mb-40 ලබා දුන්නේ ඊළඟ card එක එන්න කලින් button එක පෙනෙන්න ඉඩ තියන්නයි
+      // Mobile වලදී mb-40 ලබා දුන්නේ Booking button එක පේන්න ඕන නිසා
       className="sticky w-full mb-40 lg:mb-[25vh]" 
       style={{
         top: `${window.innerWidth < 768 ? 20 + index * 15 : 80 + index * 32}px`,
@@ -76,9 +98,9 @@ function Navbar() {
         <img alt="logo" className="absolute inset-0 object-cover rounded-full size-full" src={imgFrame3} />
       </div>
       <div className="hidden md:flex font-normal gap-[25px] items-center text-white text-[18px]">
-        <p className="cursor-pointer hover:text-gray-300 transition-colors">Home</p>
-        <p className="cursor-pointer hover:text-gray-300 transition-colors">Services</p>
-        <p className="cursor-pointer hover:text-gray-300 transition-colors">Reviews</p>
+        <p className="cursor-pointer hover:text-gray-300">Home</p>
+        <p className="cursor-pointer hover:text-gray-300">Services</p>
+        <p className="cursor-pointer hover:text-gray-300">Reviews</p>
       </div>
       <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" className="bg-[#f4f4f4] hover:bg-white px-6 lg:px-8 py-2 lg:py-3 rounded-[50px] text-[#1e1e1e] text-sm lg:text-[16px] font-bold">
         Book Now
@@ -115,7 +137,7 @@ function Hero() {
   );
 }
 
-// --- Service Components ---
+// --- Service Item Component ---
 function CheckListItem({ text }) {
   return (
     <div className="flex gap-[12px] items-center w-full">
@@ -130,6 +152,7 @@ function CheckListItem({ text }) {
   );
 }
 
+// --- Service Card Content ---
 function ServiceCard({ image, title, desc, checks, linkSuffix }) {
   return (
     <>
@@ -202,42 +225,90 @@ function Airbnb() {
   );
 }
 
+// --- Reviews ---
+function Reviews() {
+  return (
+    <section className="bg-[#f5f4f4] py-12 lg:py-[100px] px-6">
+      <div className="max-w-[1280px] mx-auto">
+        <h2 className="text-center font-semibold text-3xl md:text-5xl mb-12">What Clients Are Saying</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[
+            { loc: "St. George", type: "Airbnb Host", text: "The turnovers are always on time, the property looks incredible, and our guests constantly mention how clean everything feels." },
+            { loc: "Ivins", type: "Homeowner", text: "Professional, reliable, and extremely detailed. Our home always feels fresh and peaceful after every cleaning." },
+            { loc: "Cedar City", type: "Homeowner", text: "We booked a deep clean before moving into our new home and were genuinely impressed. Every room looked spotless." }
+          ].map((rev, i) => (
+            <div key={i} className="bg-white p-8 rounded-[24px] shadow-sm border border-black/5">
+              <div className="flex gap-1 mb-4">
+                {[...Array(5)].map((_, j) => <span key={j} className="text-yellow-400">★</span>)}
+              </div>
+              <p className="italic text-[#4a5565] mb-6">"{rev.text}"</p>
+              <div className="border-t pt-4">
+                <p className="font-bold text-[#1e1e1e]">{rev.type}</p>
+                <p className="text-sm text-gray-400">{rev.loc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// --- Areas ---
+function Areas() {
+  return (
+    <section className="relative py-20 px-6 text-white overflow-hidden">
+      <img alt="Service Areas" className="absolute inset-0 size-full object-cover z-0" src={imgAreas} />
+      <div className="absolute inset-0 bg-black/70 z-10" />
+      <div className="relative z-20 max-w-[1280px] mx-auto text-center lg:text-left">
+        <h2 className="text-4xl md:text-6xl font-bold mb-6">Proudly Serving Southern Utah</h2>
+        <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
+          {["St. George", "Ivins", "Washington", "Cedar City", "Santa Clara"].map((city) => (
+            <span key={city} className="bg-white/10 backdrop-blur-md border border-white/20 px-6 py-2 rounded-full font-medium">{city}</span>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // --- Footer ---
 function Footer() {
   return (
-    <footer className="bg-[#1e1e1e] text-white/50 py-16 px-8 text-center lg:text-left">
-      <div className="max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-4 gap-12">
+    <footer className="bg-[#1e1e1e] text-white/50 py-16 px-6">
+      <div className="max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
         <div>
-          <img src={imgFrame3} className="size-12 rounded-full mb-6 mx-auto lg:mx-0 border border-white/10" alt="Logo" />
+          <img src={imgFrame3} className="w-12 h-12 rounded-full mb-6 mx-auto lg:mx-0 border-2 border-white/20" alt="Logo" />
           <p className="text-sm">Luxury housekeeping and Airbnb turnover services in Southern Utah.</p>
         </div>
         <div>
-          <h4 className="text-white font-bold uppercase text-xs tracking-widest mb-6">Quick Links</h4>
-          <div className="flex flex-col gap-3 text-sm">
-            <p className="hover:text-white cursor-pointer transition-colors">Home</p>
-            <p className="hover:text-white cursor-pointer transition-colors">Services</p>
-            <p className="hover:text-white cursor-pointer transition-colors">Reviews</p>
-          </div>
+          <h4 className="text-white font-bold mb-6 uppercase text-xs tracking-widest">Quick Links</h4>
+          <ul className="flex flex-col gap-4 text-sm">
+            <li className="hover:text-white cursor-pointer transition-colors">Home</li>
+            <li className="hover:text-white cursor-pointer transition-colors">Services</li>
+            <li className="hover:text-white cursor-pointer transition-colors">Reviews</li>
+          </ul>
         </div>
         <div>
-          <h4 className="text-white font-bold uppercase text-xs tracking-widest mb-6">Hours</h4>
+          <h4 className="text-white font-bold mb-6 uppercase text-xs tracking-widest">Hours</h4>
           <p className="text-sm">Mon - Fri: 8AM - 6PM</p>
           <p className="text-sm">Sat: 8AM - 3PM</p>
           <p className="text-sm text-red-400">Sun: Closed</p>
         </div>
         <div>
-          <h4 className="text-white font-bold uppercase text-xs tracking-widest mb-6">Contact</h4>
+          <h4 className="text-white font-bold mb-6 uppercase text-xs tracking-widest">Contact</h4>
           <p className="text-sm mb-2">📍 Cedar City, UT, US</p>
           <p className="text-sm">✉️ southernutahhousekeeping@gmail.com</p>
         </div>
       </div>
       <div className="max-w-[1280px] mx-auto border-t border-white/10 mt-16 pt-8 text-center text-[10px]">
-        <p>© 2026 Southern Utah Housekeeping. Website Designed by maheux.me</p>
+        <p>© 2026 Southern Utah Housekeeping. Designed by maheux.me</p>
       </div>
     </footer>
   );
 }
 
+// --- Final Component ---
 export default function SouthernUtahHousekeeping() {
   return (
     <main className="bg-white min-h-screen font-['Inter',sans-serif] selection:bg-black selection:text-white">
@@ -250,6 +321,8 @@ export default function SouthernUtahHousekeeping() {
           <img src={imgFrame33} className="w-full h-auto" alt="Transformation" />
         </div>
       </section>
+      <Reviews />
+      <Areas />
       <Footer />
     </main>
   );
