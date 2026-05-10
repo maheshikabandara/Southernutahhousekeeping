@@ -15,7 +15,7 @@ import imgAreas from "./8fd18d26ce2cf7c41459f9f71d7faa1b26bd5e0f.png";
 
 const BOOKING_LINK = "https://cal.com/mahe-bandara-dvwcve";
 
-// --- Shared Section Layout ---
+// --- Shared Section Wrapper ---
 function SectionLayout({ children, className = "", id = "" }) {
   return (
     <section id={id} className={`w-full flex justify-center ${className}`}>
@@ -36,12 +36,11 @@ function ServiceCardWrapper({ children, index }) {
       if (!containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
       const isMobile = window.innerWidth < 768;
-      const stickyTop = isMobile ? 10 : 80;
+      const stickyTop = isMobile ? 15 : 80;
 
       if (rect.top <= stickyTop) {
         const scrolledPastTop = Math.abs(rect.top - stickyTop);
         const scrollRange = 500;
-        // Mobile හිදී card එක ඕනෑවට වඩා කුඩා වීම button වැසීමට හේතු වන නිසා scaleLimit එක 0.97 කළා
         const scaleLimit = isMobile ? 0.97 : 0.92; 
         const newScale = Math.max(scaleLimit, 1 - (scrolledPastTop / (scrollRange * 15)));
         const newOpacity = Math.max(0.7, 1 - (scrolledPastTop / (scrollRange * 6)));
@@ -57,16 +56,15 @@ function ServiceCardWrapper({ children, index }) {
   return (
     <div
       ref={containerRef}
-      // Mobile වලදී mb-40 ලබා දුන්නේ පසුපස card එකේ button එක පෙනෙන තෙක් scroll වීමට ඉඩ දීමටයි
       className="sticky w-full mb-32 lg:mb-[30vh]" 
       style={{
-        top: `${window.innerWidth < 768 ? 10 + index * 12 : 80 + index * 24}px`,
+        top: `${window.innerWidth < 768 ? 15 + index * 12 : 80 + index * 24}px`,
         zIndex: index + 1,
-        transition: "transform 0.2s ease-out, opacity 0.2s ease-out"
+        transition: "transform 0.1s linear, opacity 0.1s linear"
       }}
     >
       <div 
-        className="bg-white flex flex-col lg:flex-row overflow-hidden rounded-[32px] shadow-2xl border border-black/5"
+        className="bg-[#fdfdfd] flex flex-col lg:flex-row overflow-hidden rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-black/5"
         style={{
           transform: `scale(${transformStyles.scale})`,
           opacity: transformStyles.opacity,
@@ -82,14 +80,14 @@ function ServiceCardWrapper({ children, index }) {
 // --- Icons & UI Elements ---
 function CheckListItem({ text }) {
   return (
-    <div className="flex gap-[10px] items-center w-full">
-      <div className="shrink-0 size-[22px]">
+    <div className="flex gap-[12px] items-center w-full">
+      <div className="relative shrink-0 size-[20px] lg:size-[24px]">
         <svg className="block size-full" fill="none" viewBox="0 0 32 32">
           <circle cx="16" cy="16" r="12" stroke="#9E9491" strokeWidth="2" />
           <path d="M11.5 16.5L14.25 19.25L20.5 13" stroke="#9E9491" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
         </svg>
       </div>
-      <p className="font-medium text-[#5b5b5b] text-[14px] lg:text-[15px] leading-tight">{text}</p>
+      <p className="font-medium text-[#5b5b5b] text-[14px] lg:text-[16px] leading-tight">{text}</p>
     </div>
   );
 }
@@ -113,16 +111,16 @@ function Hero() {
           <div className="bg-[#e1dedd] px-4 py-2 rounded-[50px]">
             <p className="text-[#9e9491] text-[10px] lg:text-[14px] tracking-[1.2px] uppercase font-bold">Professional cleaning service in Southern Utah</p>
           </div>
-          <h1 className="font-bold leading-[1.1] text-[#1e1e1e] text-5xl lg:text-[84px] tracking-tight">Luxury Housekeeping & Airbnb Turnovers</h1>
+          <h1 className="font-bold leading-[1.1] text-[#1e1e1e] text-4xl lg:text-[72px] tracking-tight">Luxury Housekeeping & Airbnb Turnovers</h1>
           <p className="text-[#5b5b5b] text-lg lg:text-[24px] max-w-[500px]">5 star rated cleaning for luxury homes and vacation rentals in Southern Utah</p>
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-            <a href={`${BOOKING_LINK}/cleaning`} className="bg-[#1e1e1e] text-white px-10 py-4 rounded-full font-bold shadow-lg text-center">Book a Cleaning</a>
-            <button className="bg-[#f4f4f4] border border-[#1e1e1e] px-10 py-4 rounded-full font-bold">Get a Free Quote</button>
+            <a href={`${BOOKING_LINK}/cleaning`} className="bg-[#1e1e1e] text-white px-8 py-4 rounded-full font-bold shadow-lg text-center">Book a Cleaning</a>
+            <button className="bg-[#f4f4f4] border border-[#1e1e1e] px-8 py-4 rounded-full font-bold">Get a Free Quote</button>
           </div>
         </div>
         <div className="relative w-full lg:w-1/2 aspect-square max-w-[500px] lg:max-w-none">
-          <div className="absolute inset-0 bg-[#9e9491] translate-x-3 translate-y-3 lg:translate-x-4 lg:translate-y-4 rounded-3xl" />
-          <img src={imgFrame5} className="relative w-full h-full object-cover rounded-3xl border border-black/5 shadow-xl" alt="hero" />
+          <div className="absolute inset-0 bg-[#9e9491] translate-x-3 translate-y-3 lg:translate-x-4 lg:translate-y-4 rounded-2xl" />
+          <img src={imgFrame5} className="relative w-full h-full object-cover rounded-2xl border border-black/5 shadow-xl" alt="hero" />
         </div>
       </div>
     </SectionLayout>
@@ -133,11 +131,10 @@ function Hero() {
 function ServiceCard({ image, title, desc, checks, linkSuffix }) {
   return (
     <>
-      {/* Mobile හිදී පින්තූරයේ උස අඩු කළා එවිට පහළ අන්තර්ගතයට වැඩි ඉඩක් ලැබේ */}
-      <div className="w-full lg:w-1/2 h-[260px] lg:h-auto min-h-[300px] lg:min-h-[500px]">
+      <div className="w-full lg:w-1/2 h-[260px] lg:h-auto min-h-[300px] lg:min-h-[520px]">
         <img alt={title} className="w-full h-full object-cover" src={image} />
       </div>
-      <div className="p-8 lg:p-14 flex flex-col gap-6 lg:w-1/2 justify-center bg-white">
+      <div className="p-8 lg:p-14 flex flex-col gap-6 lg:w-1/2 justify-center bg-white min-h-[400px] lg:min-h-[520px]">
         <div className="flex flex-col gap-3">
           <h3 className="text-2xl lg:text-4xl font-bold text-[#1e1e1e] leading-tight">{title}</h3>
           <p className="text-sm lg:text-lg text-[#5b5b5b] leading-relaxed">{desc}</p>
@@ -270,7 +267,7 @@ function Footer() {
     <footer className="bg-[#1e1e1e] py-16 lg:py-24 text-white/50">
       <div className="max-w-[1280px] mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-4 gap-12 lg:gap-16">
         <div className="flex flex-col gap-6">
-          <img src={imgFrame3} className="size-12 lg:size-16 rounded-full border-2 border-white/10" alt="Logo" />
+          <img src={imgFrame3} className="size-12 lg:size-16 rounded-full border-2 border-white/10 shadow-xl" alt="Logo" />
           <p className="text-sm lg:text-base leading-relaxed">Luxury housekeeping and Airbnb turnover services in Southern Utah.</p>
         </div>
         <div className="flex flex-col gap-6">
@@ -298,7 +295,7 @@ function Footer() {
           </div>
         </div>
       </div>
-      <div className="max-w-[1280px] mx-auto border-t border-white/10 mt-16 pt-8 px-6 lg:px-12 flex flex-col md:flex-row justify-between items-center text-[11px] gap-4">
+      <div className="max-w-[1280px] mx-auto border-t border-white/10 mt-16 pt-8 px-6 lg:px-12 flex flex-col md:row justify-between items-center text-[11px] gap-4">
         <p>© 2026 Southern Utah Housekeeping. All Rights Reserved.</p>
         <p>Website Designed by maheux.me</p>
       </div>
