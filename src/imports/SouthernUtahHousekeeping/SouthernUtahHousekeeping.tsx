@@ -47,15 +47,14 @@ function ServiceCardWrapper({ children, index }) {
       if (!containerRef.current) return;
 
       const rect = containerRef.current.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      
-      // වීඩියෝ එකේ වගේ card එක sticky උඩටම ආවම scale down වෙන්න ඕන.
-      // Card එක top එකට ළඟා වෙලා තවදුරටත් scroll වෙද්දී scale එක අඩු කරනවා.
-      if (rect.top <= 80) { // 80px is our sticky top
-        const scrolledPastTop = Math.abs(rect.top - 80);
-        const scrollRange = 400; // කොච්චර scroll වෙද්දීද scale එක වෙන්න ඕන කියන එක
+      const stickyTop = window.innerWidth < 768 ? 60 : 80;
+
+      if (rect.top <= stickyTop) {
+        const scrolledPastTop = Math.abs(rect.top - stickyTop);
+        const scrollRange = 400;
         
-        const newScale = Math.max(0.9, 1 - (scrolledPastTop / (scrollRange * 10)));
+        const scaleLimit = window.innerWidth < 768 ? 0.95 : 0.9;
+        const newScale = Math.max(scaleLimit, 1 - (scrolledPastTop / (scrollRange * 10)));
         const newOpacity = Math.max(0.8, 1 - (scrolledPastTop / (scrollRange * 5)));
         
         setTransformStyles({ scale: newScale, opacity: newOpacity });
@@ -71,9 +70,9 @@ function ServiceCardWrapper({ children, index }) {
   return (
     <div
       ref={containerRef}
-      className="sticky w-full mb-[15vh] lg:mb-[25vh]" // Space to allow background card to be seen
+      className="sticky w-full mb-20 lg:mb-[25vh]" 
       style={{
-        top: `${80 + index * 32}px`, // Stacking offset
+        top: `${window.innerWidth < 768 ? 60 + index * 20 : 80 + index * 32}px`,
         zIndex: index + 1,
         transition: "transform 0.1s linear, opacity 0.1s linear"
       }}
