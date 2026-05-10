@@ -15,7 +15,7 @@ import imgAreas from "./8fd18d26ce2cf7c41459f9f71d7faa1b26bd5e0f.png";
 
 const BOOKING_LINK = "https://cal.com/mahe-bandara-dvwcve";
 
-// --- Shared Section Wrapper ---
+// --- Shared Section Layout ---
 function SectionLayout({ children, className = "", id = "" }) {
   return (
     <section id={id} className={`w-full flex justify-center ${className}`}>
@@ -26,7 +26,7 @@ function SectionLayout({ children, className = "", id = "" }) {
   );
 }
 
-// --- Service Card Wrapper with Stacking Fix ---
+// --- Service Card Wrapper with Stacking & Scaling Logic ---
 function ServiceCardWrapper({ children, index }) {
   const containerRef = useRef(null);
   const [transformStyles, setTransformStyles] = useState({ scale: 1, opacity: 1 });
@@ -104,7 +104,7 @@ function Hero() {
           <p className="cursor-pointer hover:text-gray-300 transition-colors">Reviews</p>
           <p className="cursor-pointer hover:text-gray-300 transition-colors">Service Areas</p>
         </div>
-        <a href={BOOKING_LINK} className="bg-white text-black px-6 py-2 rounded-full text-xs lg:text-sm font-bold uppercase">Book Now</a>
+        <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" className="bg-white text-black px-6 py-2 rounded-full text-xs lg:text-sm font-bold uppercase">Book Now</a>
       </nav>
       <div className="flex flex-col lg:flex-row gap-12 lg:gap-[48px] items-center py-10 lg:py-[80px]">
         <div className="flex flex-col gap-[24px] items-center lg:items-start text-center lg:text-left w-full lg:w-1/2">
@@ -114,7 +114,7 @@ function Hero() {
           <h1 className="font-bold leading-[1.1] text-[#1e1e1e] text-4xl lg:text-[72px] tracking-tight">Luxury Housekeeping & Airbnb Turnovers</h1>
           <p className="text-[#5b5b5b] text-lg lg:text-[24px] max-w-[500px]">5 star rated cleaning for luxury homes and vacation rentals in Southern Utah</p>
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-            <a href={`${BOOKING_LINK}/cleaning`} className="bg-[#1e1e1e] text-white px-8 py-4 rounded-full font-bold shadow-lg text-center">Book a Cleaning</a>
+            <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] text-white px-8 py-4 rounded-full font-bold shadow-lg text-center">Book a Cleaning</a>
             <button className="bg-[#f4f4f4] border border-[#1e1e1e] px-8 py-4 rounded-full font-bold">Get a Free Quote</button>
           </div>
         </div>
@@ -127,7 +127,7 @@ function Hero() {
   );
 }
 
-// --- Service Card Content Fix ---
+// --- Service Card ---
 function ServiceCard({ image, title, desc, checks, linkSuffix }) {
   return (
     <>
@@ -143,7 +143,8 @@ function ServiceCard({ image, title, desc, checks, linkSuffix }) {
           {checks.map((check, i) => <CheckListItem key={i} text={check} />)}
         </div>
         <div className="mt-2 w-full lg:w-auto">
-          <a href={`${BOOKING_LINK}/${linkSuffix}`} className="bg-[#1e1e1e] text-white px-10 py-3 lg:py-4 rounded-full font-bold shadow-lg inline-block text-center hover:bg-black transition-colors w-full lg:w-fit lg:px-12">
+          {/* Button Link Fix: template literal use karala link eka haduwa */}
+          <a href={`${BOOKING_LINK}/${linkSuffix}`} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] text-white px-10 py-3 lg:py-4 rounded-full font-bold shadow-lg inline-block text-center hover:bg-black transition-colors w-full lg:w-fit lg:px-12">
             Book a Cleaning
           </a>
         </div>
@@ -202,7 +203,8 @@ function Airbnb() {
             </div>
           </div>
           <div className="flex flex-col sm:flex-row gap-4 mt-4">
-            <a href={BOOKING_LINK} className="bg-[#1e1e1e] text-white px-12 py-4 rounded-full font-bold shadow-lg text-center hover:bg-black transition-colors">Book a Cleaning</a>
+            {/* Button Link Fix */}
+            <a href={`${BOOKING_LINK}/airbnb-turnovers`} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] text-white px-12 py-4 rounded-full font-bold shadow-lg text-center hover:bg-black transition-colors">Book a Cleaning</a>
             <button className="bg-white border border-[#1e1e1e] px-12 py-4 rounded-full font-bold text-center hover:bg-gray-50 transition-colors">Get a Free Quote</button>
           </div>
         </div>
