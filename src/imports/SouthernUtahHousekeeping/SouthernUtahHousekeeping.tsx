@@ -15,7 +15,7 @@ import imgAreas from "./8fd18d26ce2cf7c41459f9f71d7faa1b26bd5e0f.png";
 
 const BOOKING_LINK = "https://cal.com/mahe-bandara-dvwcve";
 
-// --- Shared Section Wrapper (To ensure uniform width and padding) ---
+// --- Shared Section Layout ---
 function SectionLayout({ children, className = "", id = "" }) {
   return (
     <section id={id} className={`w-full flex justify-center ${className}`}>
@@ -26,7 +26,7 @@ function SectionLayout({ children, className = "", id = "" }) {
   );
 }
 
-// --- Service Card Wrapper with Stacking & Scaling Logic ---
+// --- Service Card Wrapper with Stacking Fix ---
 function ServiceCardWrapper({ children, index }) {
   const containerRef = useRef(null);
   const [transformStyles, setTransformStyles] = useState({ scale: 1, opacity: 1 });
@@ -36,14 +36,15 @@ function ServiceCardWrapper({ children, index }) {
       if (!containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
       const isMobile = window.innerWidth < 768;
-      const stickyTop = isMobile ? 20 : 80;
+      const stickyTop = isMobile ? 10 : 80;
 
       if (rect.top <= stickyTop) {
         const scrolledPastTop = Math.abs(rect.top - stickyTop);
-        const scrollRange = 400;
-        const scaleLimit = isMobile ? 0.96 : 0.9; 
-        const newScale = Math.max(scaleLimit, 1 - (scrolledPastTop / (scrollRange * 10)));
-        const newOpacity = Math.max(0.8, 1 - (scrolledPastTop / (scrollRange * 5)));
+        const scrollRange = 500;
+        // Mobile හිදී card එක ඕනෑවට වඩා කුඩා වීම button වැසීමට හේතු වන නිසා scaleLimit එක 0.97 කළා
+        const scaleLimit = isMobile ? 0.97 : 0.92; 
+        const newScale = Math.max(scaleLimit, 1 - (scrolledPastTop / (scrollRange * 15)));
+        const newOpacity = Math.max(0.7, 1 - (scrolledPastTop / (scrollRange * 6)));
         setTransformStyles({ scale: newScale, opacity: newOpacity });
       } else {
         setTransformStyles({ scale: 1, opacity: 1 });
@@ -56,15 +57,16 @@ function ServiceCardWrapper({ children, index }) {
   return (
     <div
       ref={containerRef}
-      className="sticky w-full mb-40 lg:mb-[25vh]" 
+      // Mobile වලදී mb-40 ලබා දුන්නේ පසුපස card එකේ button එක පෙනෙන තෙක් scroll වීමට ඉඩ දීමටයි
+      className="sticky w-full mb-32 lg:mb-[30vh]" 
       style={{
-        top: `${window.innerWidth < 768 ? 20 + index * 15 : 80 + index * 32}px`,
+        top: `${window.innerWidth < 768 ? 10 + index * 12 : 80 + index * 24}px`,
         zIndex: index + 1,
-        transition: "transform 0.1s linear, opacity 0.1s linear"
+        transition: "transform 0.2s ease-out, opacity 0.2s ease-out"
       }}
     >
       <div 
-        className="bg-[#fdfdfd] flex flex-col lg:flex-row overflow-hidden rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-black/5"
+        className="bg-white flex flex-col lg:flex-row overflow-hidden rounded-[32px] shadow-2xl border border-black/5"
         style={{
           transform: `scale(${transformStyles.scale})`,
           opacity: transformStyles.opacity,
@@ -80,19 +82,19 @@ function ServiceCardWrapper({ children, index }) {
 // --- Icons & UI Elements ---
 function CheckListItem({ text }) {
   return (
-    <div className="flex gap-[12px] items-center w-full">
-      <div className="relative shrink-0 size-[20px] lg:size-[24px]">
+    <div className="flex gap-[10px] items-center w-full">
+      <div className="shrink-0 size-[22px]">
         <svg className="block size-full" fill="none" viewBox="0 0 32 32">
           <circle cx="16" cy="16" r="12" stroke="#9E9491" strokeWidth="2" />
           <path d="M11.5 16.5L14.25 19.25L20.5 13" stroke="#9E9491" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
         </svg>
       </div>
-      <p className="font-medium text-[#5b5b5b] text-[14px] lg:text-[16px]">{text}</p>
+      <p className="font-medium text-[#5b5b5b] text-[14px] lg:text-[15px] leading-tight">{text}</p>
     </div>
   );
 }
 
-// --- Page Sections ---
+// --- Hero Section ---
 function Hero() {
   return (
     <SectionLayout className="bg-white pt-4 lg:pt-[32px]">
@@ -111,51 +113,67 @@ function Hero() {
           <div className="bg-[#e1dedd] px-4 py-2 rounded-[50px]">
             <p className="text-[#9e9491] text-[10px] lg:text-[14px] tracking-[1.2px] uppercase font-bold">Professional cleaning service in Southern Utah</p>
           </div>
-          <h1 className="font-bold leading-[1.1] text-[#1e1e1e] text-4xl lg:text-[72px] tracking-tight">Luxury Housekeeping & Airbnb Turnovers</h1>
+          <h1 className="font-bold leading-[1.1] text-[#1e1e1e] text-5xl lg:text-[84px] tracking-tight">Luxury Housekeeping & Airbnb Turnovers</h1>
           <p className="text-[#5b5b5b] text-lg lg:text-[24px] max-w-[500px]">5 star rated cleaning for luxury homes and vacation rentals in Southern Utah</p>
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-            <a href={`${BOOKING_LINK}/cleaning`} className="bg-[#1e1e1e] text-white px-8 py-4 rounded-full font-bold shadow-lg text-center">Book a Cleaning</a>
-            <button className="bg-[#f4f4f4] border border-[#1e1e1e] px-8 py-4 rounded-full font-bold">Get a Free Quote</button>
+            <a href={`${BOOKING_LINK}/cleaning`} className="bg-[#1e1e1e] text-white px-10 py-4 rounded-full font-bold shadow-lg text-center">Book a Cleaning</a>
+            <button className="bg-[#f4f4f4] border border-[#1e1e1e] px-10 py-4 rounded-full font-bold">Get a Free Quote</button>
           </div>
         </div>
         <div className="relative w-full lg:w-1/2 aspect-square max-w-[500px] lg:max-w-none">
-          <div className="absolute inset-0 bg-[#9e9491] translate-x-3 translate-y-3 lg:translate-x-4 lg:translate-y-4 rounded-2xl" />
-          <img src={imgFrame5} className="relative w-full h-full object-cover rounded-2xl border border-black/5 shadow-xl" alt="hero" />
+          <div className="absolute inset-0 bg-[#9e9491] translate-x-3 translate-y-3 lg:translate-x-4 lg:translate-y-4 rounded-3xl" />
+          <img src={imgFrame5} className="relative w-full h-full object-cover rounded-3xl border border-black/5 shadow-xl" alt="hero" />
         </div>
       </div>
     </SectionLayout>
   );
 }
 
+// --- Service Card Content Fix ---
+function ServiceCard({ image, title, desc, checks, linkSuffix }) {
+  return (
+    <>
+      {/* Mobile හිදී පින්තූරයේ උස අඩු කළා එවිට පහළ අන්තර්ගතයට වැඩි ඉඩක් ලැබේ */}
+      <div className="w-full lg:w-1/2 h-[260px] lg:h-auto min-h-[300px] lg:min-h-[500px]">
+        <img alt={title} className="w-full h-full object-cover" src={image} />
+      </div>
+      <div className="p-8 lg:p-14 flex flex-col gap-6 lg:w-1/2 justify-center bg-white">
+        <div className="flex flex-col gap-3">
+          <h3 className="text-2xl lg:text-4xl font-bold text-[#1e1e1e] leading-tight">{title}</h3>
+          <p className="text-sm lg:text-lg text-[#5b5b5b] leading-relaxed">{desc}</p>
+        </div>
+        <div className="flex flex-col gap-3 lg:gap-4">
+          {checks.map((check, i) => <CheckListItem key={i} text={check} />)}
+        </div>
+        <div className="mt-2 w-full lg:w-auto">
+          <a href={`${BOOKING_LINK}/${linkSuffix}`} className="bg-[#1e1e1e] text-white px-10 py-3 lg:py-4 rounded-full font-bold shadow-lg inline-block text-center hover:bg-black transition-colors w-full lg:w-fit lg:px-12">
+            Book a Cleaning
+          </a>
+        </div>
+      </div>
+    </>
+  );
+}
+
 function Services() {
   const servicesData = [
-    { title: "Luxury Housekeeping", desc: "Routine housekeeping services for luxury and high performance homes.", image: imgFrame19, checks: ["Weekly cleaning", "Biweekly cleaning", "Monthly cleaning", "Kitchen and bathroom sanitizing", "Detailed home refreshes"] },
-    { title: "Airbnb Turnovers", desc: "Reliable Airbnb and vacation rental cleaning throughout Southern Utah.", image: imgFrame20, checks: ["Same day turnovers", "Linen replacement", "Restocking essentials", "Guest ready presentation", "Reliable scheduling"] },
-    { title: "Move In / Move Out Cleans", desc: "Detailed cleaning services for homes, apartments, and rental properties during transitions.", image: imgFrame21, checks: ["Deep reset cleans", "Appliance wipe downs", "Bathroom sanitizing", "Floor cleaning", "Full property refresh"] },
-    { title: "Commercial Cleaning", desc: "Professional maintenance cleaning for offices and commercial spaces.", image: imgFrame22, checks: ["Flexible scheduling", "Routine maintenance", "Sanitized workspaces", "Professional presentation"] },
-    { title: "Deep Cleaning", desc: "Seasonal and detailed deep cleaning services designed to refresh your home.", image: imgFrame23, checks: ["Baseboards", "Ceiling fans", "Appliance cleaning", "Detailed kitchens", "Bathroom deep scrubbing"] }
+    { title: "Luxury Housekeeping", desc: "Routine housekeeping services for luxury and high performance homes.", image: imgFrame19, linkSuffix: "luxury-housekeeping", checks: ["Weekly cleaning", "Biweekly cleaning", "Monthly cleaning", "Kitchen and bathroom sanitizing", "Detailed home refreshes"] },
+    { title: "Airbnb Turnovers", desc: "Reliable Airbnb and vacation rental cleaning throughout Southern Utah.", image: imgFrame20, linkSuffix: "airbnb-turnovers", checks: ["Same day turnovers", "Linen replacement", "Restocking essentials", "Guest ready presentation", "Reliable scheduling"] },
+    { title: "Move In / Move Out Cleans", desc: "Detailed cleaning services for homes, apartments, and rental properties during transitions.", image: imgFrame21, linkSuffix: "move-in-move-out-cleans", checks: ["Deep reset cleans", "Appliance wipe downs", "Bathroom sanitizing", "Floor cleaning", "Full property refresh"] },
+    { title: "Commercial Cleaning", desc: "Professional maintenance cleaning for offices and commercial spaces.", image: imgFrame22, linkSuffix: "commercial-cleaning", checks: ["Flexible scheduling", "Routine maintenance", "Sanitized workspaces", "Professional presentation"] },
+    { title: "Deep Cleaning", desc: "Seasonal and detailed deep cleaning services designed to refresh your home.", image: imgFrame23, linkSuffix: "deep-cleaning", checks: ["Baseboards", "Ceiling fans", "Appliance cleaning", "Detailed kitchens", "Bathroom deep scrubbing"] }
   ];
 
   return (
     <SectionLayout className="bg-white py-12 lg:py-[100px]">
       <div className="text-center mb-16 lg:mb-24">
-        <h2 className="font-semibold text-3xl lg:text-5xl tracking-tight text-[#1e1e1e] mb-4">Professional Cleaning Services</h2>
-        <p className="text-lg text-[#5b5b5b]">Tailored solutions for every cleaning need</p>
+        <h2 className="font-semibold text-3xl lg:text-6xl tracking-tight text-[#1e1e1e] mb-4">Professional Cleaning Services</h2>
+        <p className="text-lg lg:text-xl text-[#5b5b5b]">Tailored solutions for every cleaning need</p>
       </div>
-      <div className="w-full">
+      <div className="w-full flex flex-col items-center">
         {servicesData.map((s, i) => (
           <ServiceCardWrapper key={i} index={i}>
-            <div className="w-full lg:w-1/2 h-[240px] lg:h-auto overflow-hidden">
-              <img src={s.image} className="w-full h-full object-cover transition-transform hover:scale-105 duration-700" alt={s.title} />
-            </div>
-            <div className="p-8 lg:p-16 flex flex-col gap-6 lg:w-1/2 justify-center">
-              <h3 className="text-2xl lg:text-4xl font-bold tracking-tight">{s.title}</h3>
-              <p className="text-sm lg:text-lg text-[#5b5b5b] leading-relaxed">{s.desc}</p>
-              <div className="grid grid-cols-1 gap-3">
-                {s.checks.map((c, j) => <CheckListItem key={j} text={c} />)}
-              </div>
-              <a href={BOOKING_LINK} className="bg-[#1e1e1e] text-white py-3 lg:py-4 rounded-full text-center font-bold mt-4 shadow-md lg:w-fit lg:px-12 hover:bg-black transition-colors">Book a Cleaning</a>
-            </div>
+            <ServiceCard {...s} />
           </ServiceCardWrapper>
         ))}
       </div>
@@ -168,10 +186,10 @@ function Airbnb() {
     <SectionLayout className="bg-white py-16 lg:py-[120px]">
       <div className="flex flex-col lg:flex-row gap-12 lg:gap-[64px] items-center">
         <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-1/2">
-          <img src={imgFrame6} className="w-full sm:w-1/2 h-[300px] lg:h-[600px] object-cover rounded-[32px]" alt="Airbnb 1" />
+          <img src={imgFrame6} className="w-full sm:w-1/2 h-[350px] lg:h-[650px] object-cover rounded-[32px] shadow-lg" alt="Airbnb 1" />
           <div className="flex flex-col gap-4 w-full sm:w-1/2">
-            <img src={imgFrame7} className="h-48 lg:h-[285px] object-cover rounded-[32px]" alt="Airbnb 2" />
-            <img src={imgFrame8} className="flex-1 h-48 lg:h-[285px] object-cover rounded-[32px]" alt="Airbnb 3" />
+            <img src={imgFrame7} className="h-52 lg:h-[310px] object-cover rounded-[32px] shadow-lg" alt="Airbnb 2" />
+            <img src={imgFrame8} className="flex-1 h-52 lg:h-[310px] object-cover rounded-[32px] shadow-lg" alt="Airbnb 3" />
           </div>
         </div>
         <div className="lg:w-1/2 flex flex-col gap-6 lg:gap-8">
@@ -196,6 +214,32 @@ function Airbnb() {
   );
 }
 
+function Reviews() {
+  return (
+    <SectionLayout className="bg-[#f5f4f4] py-16 lg:py-24">
+      <h2 className="text-center font-bold text-3xl lg:text-5xl mb-16 text-[#1e1e1e]">What Clients Are Saying</h2>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {[
+          { loc: "St. George", type: "Airbnb Host", text: "Southern Utah Housekeeping completely changed the way we manage our Airbnb. The turnovers are always on time, the property looks incredible." },
+          { loc: "Ivins", type: "Homeowner", text: "Professional, reliable, and extremely detailed. Our home always feels fresh and peaceful after every cleaning. Highly recommend." },
+          { loc: "Cedar City", type: "Homeowner", text: "We booked a deep clean before moving into our new home and were genuinely impressed. Every room looked spotless." }
+        ].map((rev, i) => (
+          <div key={i} className="bg-white p-8 lg:p-10 rounded-[32px] shadow-sm border border-black/5 flex flex-col gap-6">
+            <div className="flex gap-1">
+              {[...Array(5)].map((_, j) => <span key={j} className="text-yellow-400 text-xl">★</span>)}
+            </div>
+            <p className="italic text-[#4a5565] leading-relaxed text-lg flex-1">"{rev.text}"</p>
+            <div className="border-t pt-6">
+              <p className="font-bold text-[#1e1e1e] text-lg">{rev.type}</p>
+              <p className="text-sm text-gray-400 font-medium">{rev.loc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </SectionLayout>
+  );
+}
+
 function Areas() {
   const locations = ["St. George", "Ivins", "Washington", "Cedar City", "Santa Clara", "Middleton", "Surrounding Southern Utah Areas"];
   return (
@@ -207,7 +251,7 @@ function Areas() {
         <p className="text-white/95 text-lg lg:text-2xl font-medium">Southern Utah Housekeeping proudly provides cleaning services throughout</p>
         <div className="flex flex-wrap justify-center gap-4 lg:gap-6 mt-4 w-full">
           {locations.map((loc, i) => (
-            <div key={i} className="bg-white/95 backdrop-blur-sm border border-white/20 px-8 py-3 lg:px-10 lg:py-4 rounded-full flex items-center gap-3 shadow-2xl transition-all hover:scale-105">
+            <div key={i} className="bg-white/95 backdrop-blur-sm px-8 py-3 lg:px-10 lg:py-4 rounded-full flex items-center gap-3 shadow-2xl transition-all hover:scale-105">
               <svg className="size-5 lg:size-6 text-[#1e1e1e]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -226,7 +270,7 @@ function Footer() {
     <footer className="bg-[#1e1e1e] py-16 lg:py-24 text-white/50">
       <div className="max-w-[1280px] mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-4 gap-12 lg:gap-16">
         <div className="flex flex-col gap-6">
-          <img src={imgFrame3} className="size-12 lg:size-16 rounded-full border-2 border-white/10 shadow-xl" alt="Logo" />
+          <img src={imgFrame3} className="size-12 lg:size-16 rounded-full border-2 border-white/10" alt="Logo" />
           <p className="text-sm lg:text-base leading-relaxed">Luxury housekeeping and Airbnb turnover services in Southern Utah.</p>
         </div>
         <div className="flex flex-col gap-6">
@@ -254,7 +298,7 @@ function Footer() {
           </div>
         </div>
       </div>
-      <div className="max-w-[1280px] mx-auto border-t border-white/10 mt-16 pt-8 px-6 lg:px-12 flex flex-col md:row justify-between items-center text-[11px] gap-4">
+      <div className="max-w-[1280px] mx-auto border-t border-white/10 mt-16 pt-8 px-6 lg:px-12 flex flex-col md:flex-row justify-between items-center text-[11px] gap-4">
         <p>© 2026 Southern Utah Housekeeping. All Rights Reserved.</p>
         <p>Website Designed by maheux.me</p>
       </div>
@@ -268,8 +312,9 @@ export default function SouthernUtahHousekeeping() {
       <Hero />
       <Services />
       <Airbnb />
-      <SectionLayout className="bg-white py-16 lg:py-[100px] text-center">
-        <h2 className="text-4xl lg:text-6xl font-bold mb-12 tracking-tight">See The Difference</h2>
+      <Reviews />
+      <SectionLayout className="bg-white py-16 lg:py-[120px] text-center">
+        <h2 className="text-4xl lg:text-6xl font-bold mb-12 lg:mb-20 tracking-tight text-[#1e1e1e]">See The Difference</h2>
         <div className="w-full rounded-[40px] overflow-hidden shadow-2xl border border-black/5">
           <img src={imgFrame33} className="w-full transition-transform hover:scale-[1.02] duration-1000" alt="Difference" />
         </div>
