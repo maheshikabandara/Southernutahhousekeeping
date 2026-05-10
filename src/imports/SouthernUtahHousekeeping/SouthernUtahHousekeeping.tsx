@@ -12,6 +12,8 @@ import imgFrame8 from "./80d70411b91062ea6bd0759de58f1e807eaa4251.png";
 import imgFrame33 from "./9d3e7c3693f6007709afcf8cf4b622db12a3ab44.png";
 import imgAreas from "./8fd18d26ce2cf7c41459f9f71d7faa1b26bd5e0f.png";
 
+const BOOKING_LINK = "https://cal.com/mahe-bandara-dvwcve/cleaning";
+
 function Frame2() {
   return (
     <div className="relative rounded-full shrink-0 size-[50px]">
@@ -36,11 +38,11 @@ function Frame1() {
     <div className="bg-[#1e1e1e] w-full max-w-[1280px] mx-auto flex items-center justify-between p-3 relative rounded-[50px]">
       <Frame2 />
       <Frame />
-      <div className="bg-[#f4f4f4] cursor-pointer hover:bg-gray-200 transition-colors flex gap-[10px] items-center justify-center px-[32px] py-[12px] relative rounded-[50px] shrink-0" data-name="Button">
+      <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" className="bg-[#f4f4f4] cursor-pointer hover:bg-gray-200 transition-colors flex gap-[10px] items-center justify-center px-[32px] py-[12px] relative rounded-[50px] shrink-0" data-name="Button">
         <p className="font-['Noto_Sans:Regular',sans-serif] font-normal leading-[1.5] relative shrink-0 text-[#1e1e1e] text-[16px] tracking-[0.08px]">
           Book Now
         </p>
-      </div>
+      </a>
     </div>
   );
 }
@@ -64,11 +66,11 @@ function Frame6() {
 function Frame8() {
   return (
     <div className="flex flex-col sm:flex-row gap-4 lg:gap-[24px] items-start relative w-full sm:w-auto">
-      <div className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors w-full sm:w-auto drop-shadow-md flex gap-[10px] items-center justify-center px-[32px] py-[12px] relative rounded-[50px]" data-name="Button">
+      <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors w-full sm:w-auto drop-shadow-md flex gap-[10px] items-center justify-center px-[32px] py-[12px] relative rounded-[50px]" data-name="Button">
         <p className="font-['Noto_Sans:Regular',sans-serif] font-normal leading-[1.5] relative text-[#fdfdfd] text-[16px] tracking-[0.08px]">
           Book a Cleaning
         </p>
-      </div>
+      </a>
       <div className="bg-[#f4f4f4] border border-[#1e1e1e] cursor-pointer hover:bg-gray-200 transition-colors w-full sm:w-auto flex gap-[10px] items-center justify-center px-[32px] py-[12px] relative rounded-[50px]" data-name="Button">
         <p className="font-['Noto_Sans:Regular',sans-serif] font-normal leading-[1.5] relative text-[#1e1e1e] text-[16px] tracking-[0.08px]">
           Get a Free Quote
@@ -279,7 +281,7 @@ function CheckListItem({ text }) {
 
 function Frame24() {
   return (
-    <div className="flex flex-col gap-6 lg:gap-[24px] items-start relative w-full lg:w-1/2 p-6 lg:p-12">
+    <div className="flex flex-col gap-6 lg:gap-[24px] items-start relative w-full lg:w-1/2 p-6 lg:p-12 bg-[#fdfdfd]">
       <div className="flex flex-col gap-4 items-start w-full">
         <p className="font-['Noto_Sans:SemiBold',sans-serif] font-semibold leading-[1.3] text-[#1e1e1e] text-2xl lg:text-[32px] tracking-tight">
           Luxury Housekeeping
@@ -295,18 +297,18 @@ function Frame24() {
         <CheckListItem text="Kitchen and bathroom sanitizing" />
         <CheckListItem text="Detailed home refreshes" />
       </div>
-      <div className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
+      <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
         <p className="font-['Noto_Sans:Medium',sans-serif] font-medium text-[#fdfdfd] text-[14px]">
           Book a Cleaning
         </p>
-      </div>
+      </a>
     </div>
   );
 }
 
 function Frame19() {
   return (
-    <div className="bg-[#fdfdfd] flex flex-col lg:flex-row overflow-hidden rounded-[20px] drop-shadow-md w-full relative">
+    <div className="bg-[#fdfdfd] flex flex-col lg:flex-row overflow-hidden rounded-[20px] drop-shadow-xl w-full relative h-full">
       <Frame20 />
       <Frame24 />
     </div>
@@ -315,11 +317,11 @@ function Frame19() {
 
 function Frame31() {
   return (
-    <div className="bg-[#fdfdfd] flex flex-col lg:flex-row overflow-hidden rounded-[20px] drop-shadow-md w-full relative">
+    <div className="bg-[#fdfdfd] flex flex-col lg:flex-row overflow-hidden rounded-[20px] drop-shadow-xl w-full relative h-full">
       <div className="relative w-full lg:w-1/2 min-h-[300px] lg:min-h-[480px]">
         <img alt="" className="absolute inset-0 size-full object-cover" src={imgFrame20} />
       </div>
-      <div className="flex flex-col gap-6 lg:gap-[24px] items-start relative w-full lg:w-1/2 p-6 lg:p-12">
+      <div className="flex flex-col gap-6 lg:gap-[24px] items-start relative w-full lg:w-1/2 p-6 lg:p-12 bg-[#fdfdfd]">
         <div className="flex flex-col gap-4 items-start w-full">
           <p className="font-['Noto_Sans:SemiBold',sans-serif] font-semibold leading-[1.3] text-[#1e1e1e] text-2xl lg:text-[32px] tracking-tight">
             Airbnb Turnovers
@@ -335,11 +337,11 @@ function Frame31() {
           <CheckListItem text="Guest ready presentation" />
           <CheckListItem text="Reliable scheduling" />
         </div>
-        <div className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
+        <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
           <p className="font-['Noto_Sans:Medium',sans-serif] font-medium text-[#fdfdfd] text-[14px]">
             Book a Cleaning
           </p>
-        </div>
+        </a>
       </div>
     </div>
   );
@@ -347,11 +349,11 @@ function Frame31() {
 
 function Frame42() {
   return (
-    <div className="bg-[#fdfdfd] flex flex-col lg:flex-row overflow-hidden rounded-[20px] drop-shadow-md w-full relative">
+    <div className="bg-[#fdfdfd] flex flex-col lg:flex-row overflow-hidden rounded-[20px] drop-shadow-xl w-full relative h-full">
       <div className="relative w-full lg:w-1/2 min-h-[300px] lg:min-h-[480px]">
         <img alt="" className="absolute inset-0 size-full object-cover" src={imgFrame21} />
       </div>
-      <div className="flex flex-col gap-6 lg:gap-[24px] items-start relative w-full lg:w-1/2 p-6 lg:p-12">
+      <div className="flex flex-col gap-6 lg:gap-[24px] items-start relative w-full lg:w-1/2 p-6 lg:p-12 bg-[#fdfdfd]">
         <div className="flex flex-col gap-4 items-start w-full">
           <p className="font-['Noto_Sans:SemiBold',sans-serif] font-semibold leading-[1.3] text-[#1e1e1e] text-2xl lg:text-[32px] tracking-tight">
             Move In / Move Out Cleans
@@ -367,11 +369,11 @@ function Frame42() {
           <CheckListItem text="Floor cleaning" />
           <CheckListItem text="Full property refresh" />
         </div>
-        <div className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
+        <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
           <p className="font-['Noto_Sans:Medium',sans-serif] font-medium text-[#fdfdfd] text-[14px]">
             Book a Cleaning
           </p>
-        </div>
+        </a>
       </div>
     </div>
   );
@@ -379,11 +381,11 @@ function Frame42() {
 
 function Frame52() {
   return (
-    <div className="bg-[#fdfdfd] flex flex-col lg:flex-row overflow-hidden rounded-[20px] drop-shadow-md w-full relative">
+    <div className="bg-[#fdfdfd] flex flex-col lg:flex-row overflow-hidden rounded-[20px] drop-shadow-xl w-full relative h-full">
       <div className="relative w-full lg:w-1/2 min-h-[300px] lg:min-h-[480px]">
         <img alt="" className="absolute inset-0 size-full object-cover" src={imgFrame22} />
       </div>
-      <div className="flex flex-col gap-6 lg:gap-[24px] items-start relative w-full lg:w-1/2 p-6 lg:p-12">
+      <div className="flex flex-col gap-6 lg:gap-[24px] items-start relative w-full lg:w-1/2 p-6 lg:p-12 bg-[#fdfdfd]">
         <div className="flex flex-col gap-4 items-start w-full">
           <p className="font-['Noto_Sans:SemiBold',sans-serif] font-semibold leading-[1.3] text-[#1e1e1e] text-2xl lg:text-[32px] tracking-tight">
             Commercial Cleaning
@@ -398,11 +400,11 @@ function Frame52() {
           <CheckListItem text="Sanitized workspaces" />
           <CheckListItem text="Professional presentation" />
         </div>
-        <div className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
+        <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
           <p className="font-['Noto_Sans:Medium',sans-serif] font-medium text-[#fdfdfd] text-[14px]">
             Book a Cleaning
           </p>
-        </div>
+        </a>
       </div>
     </div>
   );
@@ -410,11 +412,11 @@ function Frame52() {
 
 function Frame61() {
   return (
-    <div className="bg-[#fdfdfd] flex flex-col lg:flex-row overflow-hidden rounded-[20px] drop-shadow-md w-full relative">
+    <div className="bg-[#fdfdfd] flex flex-col lg:flex-row overflow-hidden rounded-[20px] drop-shadow-xl w-full relative h-full">
       <div className="relative w-full lg:w-1/2 min-h-[300px] lg:min-h-[480px]">
         <img alt="" className="absolute inset-0 size-full object-cover" src={imgFrame23} />
       </div>
-      <div className="flex flex-col gap-6 lg:gap-[24px] items-start relative w-full lg:w-1/2 p-6 lg:p-12">
+      <div className="flex flex-col gap-6 lg:gap-[24px] items-start relative w-full lg:w-1/2 p-6 lg:p-12 bg-[#fdfdfd]">
         <div className="flex flex-col gap-4 items-start w-full">
           <p className="font-['Noto_Sans:SemiBold',sans-serif] font-semibold leading-[1.3] text-[#1e1e1e] text-2xl lg:text-[32px] tracking-tight">
             Deep Cleaning
@@ -430,11 +432,11 @@ function Frame61() {
           <CheckListItem text="Detailed kitchens" />
           <CheckListItem text="Bathroom deep scrubbing" />
         </div>
-        <div className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
+        <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
           <p className="font-['Noto_Sans:Medium',sans-serif] font-medium text-[#fdfdfd] text-[14px]">
             Book a Cleaning
           </p>
-        </div>
+        </a>
       </div>
     </div>
   );
@@ -442,12 +444,12 @@ function Frame61() {
 
 function Frame26() {
   return (
-    <div className="flex flex-col gap-[24px] items-start relative w-full max-w-[1280px]">
-      <Frame19 />
-      <Frame31 />
-      <Frame42 />
-      <Frame52 />
-      <Frame61 />
+    <div className="flex flex-col gap-[24px] lg:gap-12 items-start relative w-full max-w-[1280px]">
+      <div className="sticky top-[20px] lg:top-[80px] w-full z-10"><Frame19 /></div>
+      <div className="sticky top-[40px] lg:top-[100px] w-full z-20"><Frame31 /></div>
+      <div className="sticky top-[60px] lg:top-[120px] w-full z-30"><Frame42 /></div>
+      <div className="sticky top-[80px] lg:top-[140px] w-full z-40"><Frame52 /></div>
+      <div className="sticky top-[100px] lg:top-[160px] w-full z-50"><Frame61 /></div>
     </div>
   );
 }
@@ -508,9 +510,9 @@ function Frame71() {
           Trusted by Airbnb and vacation rental hosts across Southern Utah.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 mt-2 w-full sm:w-auto">
-          <div className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[12px] rounded-[50px] w-full sm:w-auto">
+          <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[12px] rounded-[50px] w-full sm:w-auto">
             <p className="font-['Inter:Medium',sans-serif] font-medium text-[#fdfdfd] text-[16px]">Book a Cleaning</p>
-          </div>
+          </a>
           <div className="bg-[#f4f4f4] border border-[#1e1e1e] cursor-pointer hover:bg-gray-200 transition-colors flex items-center justify-center px-[32px] py-[12px] rounded-[50px] w-full sm:w-auto">
             <p className="font-['Inter:Medium',sans-serif] font-medium text-[#1e1e1e] text-[16px]">Get a Free Quote</p>
           </div>
