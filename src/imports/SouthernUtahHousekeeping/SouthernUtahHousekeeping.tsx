@@ -1,3 +1,4 @@
+import React, { useEffect, useRef, useState } from "react";
 import svgPaths from "./svg-7ak7cbvfen";
 import imgFrame3 from "./acc7fb9b3103855916ccdd0a0c2811b134dc3be4.png";
 import imgFrame5 from "./25cf88079ff885af26ffe975aa7a0af973bc1ddf.png";
@@ -14,6 +15,30 @@ import imgAreas from "./8fd18d26ce2cf7c41459f9f71d7faa1b26bd5e0f.png";
 
 const BOOKING_LINK = "https://cal.com/mahe-bandara-dvwcve";
 
+// --- Custom Hook for Scroll Animations ---
+function useScrollReveal() {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.15 } // Triggers when 15% of the card is visible
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return { ref, isVisible };
+}
+
+// --- Components ---
+
 function Frame2() {
   return (
     <div className="relative rounded-full shrink-0 size-[50px]">
@@ -24,7 +49,7 @@ function Frame2() {
 
 function Frame() {
   return (
-    <div className="hidden md:flex font-['Noto_Sans:Regular',sans-serif] font-normal gap-[25px] items-center leading-[1.5] relative shrink-0 text-[18px] text-white tracking-[0.09px]">
+    <div className="hidden md:flex font-normal gap-[25px] items-center leading-[1.5] relative shrink-0 text-[18px] text-white tracking-[0.09px]">
       <p className="relative shrink-0 cursor-pointer hover:text-gray-300 transition-colors">Home</p>
       <p className="relative shrink-0 cursor-pointer hover:text-gray-300 transition-colors">Services</p>
       <p className="relative shrink-0 cursor-pointer hover:text-gray-300 transition-colors">Reviews</p>
@@ -39,7 +64,7 @@ function Frame1() {
       <Frame2 />
       <Frame />
       <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" className="bg-[#f4f4f4] cursor-pointer hover:bg-gray-200 transition-colors flex gap-[10px] items-center justify-center px-[32px] py-[12px] relative rounded-[50px] shrink-0" data-name="Button">
-        <p className="font-['Noto_Sans:Regular',sans-serif] font-normal leading-[1.5] relative shrink-0 text-[#1e1e1e] text-[16px] tracking-[0.08px]">
+        <p className="font-normal leading-[1.5] relative shrink-0 text-[#1e1e1e] text-[16px] tracking-[0.08px]">
           Book Now
         </p>
       </a>
@@ -58,7 +83,7 @@ function Frame38() {
 function Frame6() {
   return (
     <div className="bg-[#e1dedd] flex items-center justify-center px-4 py-2 relative rounded-[50px]">
-      <p className="font-['Inter:Regular',sans-serif] font-normal leading-[16px] relative text-[#9e9491] text-[12px] md:text-[14px] text-center tracking-[1.2px] uppercase">Professional cleaning service in Southern Utah</p>
+      <p className="font-normal leading-[16px] relative text-[#9e9491] text-[12px] md:text-[14px] text-center tracking-[1.2px] uppercase">Professional cleaning service in Southern Utah</p>
     </div>
   );
 }
@@ -67,12 +92,12 @@ function Frame8() {
   return (
     <div className="flex flex-col sm:flex-row gap-4 lg:gap-[24px] items-start relative w-full sm:w-auto">
       <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors w-full sm:w-auto drop-shadow-md flex gap-[10px] items-center justify-center px-[32px] py-[12px] relative rounded-[50px]" data-name="Button">
-        <p className="font-['Noto_Sans:Regular',sans-serif] font-normal leading-[1.5] relative text-[#fdfdfd] text-[16px] tracking-[0.08px]">
+        <p className="font-normal leading-[1.5] relative text-[#fdfdfd] text-[16px] tracking-[0.08px]">
           Book a Cleaning
         </p>
       </a>
       <div className="bg-[#f4f4f4] border border-[#1e1e1e] cursor-pointer hover:bg-gray-200 transition-colors w-full sm:w-auto flex gap-[10px] items-center justify-center px-[32px] py-[12px] relative rounded-[50px]" data-name="Button">
-        <p className="font-['Noto_Sans:Regular',sans-serif] font-normal leading-[1.5] relative text-[#1e1e1e] text-[16px] tracking-[0.08px]">
+        <p className="font-normal leading-[1.5] relative text-[#1e1e1e] text-[16px] tracking-[0.08px]">
           Get a Free Quote
         </p>
       </div>
@@ -84,10 +109,10 @@ function Frame3() {
   return (
     <div className="flex flex-col gap-[24px] items-start relative w-full lg:w-[628px]">
       <Frame6 />
-      <p className="font-['Noto_Sans:Bold',sans-serif] font-bold leading-[1.1] relative text-[#1e1e1e] text-4xl md:text-5xl lg:text-[72px] tracking-tight text-balance">
+      <p className="font-bold leading-[1.1] relative text-[#1e1e1e] text-4xl md:text-5xl lg:text-[72px] tracking-tight text-balance">
         Luxury Housekeeping & Airbnb Turnovers
       </p>
-      <p className="font-['Noto_Sans:Regular',sans-serif] font-normal leading-[1.3] relative text-[#5b5b5b] text-lg md:text-[24px] text-balance">
+      <p className="font-normal leading-[1.3] relative text-[#5b5b5b] text-lg md:text-[24px] text-balance">
         5 star rated cleaning for luxury homes and vacation rentals in Southern Utah
       </p>
       <Frame8 />
@@ -126,10 +151,10 @@ function Frame7() {
 function Frame10() {
   return (
     <div className="flex flex-col gap-[12px] items-center lg:items-start text-center lg:text-left leading-[1.5] relative w-full">
-      <p className="font-['Noto_Sans:Bold',sans-serif] font-bold relative text-[#fdfdfd] text-[20px] tracking-tight w-full">
+      <p className="font-bold relative text-[#fdfdfd] text-[20px] tracking-tight w-full">
         5 Star Rated
       </p>
-      <p className="font-['Noto_Sans:Regular',sans-serif] font-normal relative text-[#ddd] text-[16px] md:text-[18px] w-full">
+      <p className="font-normal relative text-[#ddd] text-[16px] md:text-[18px] w-full">
         Trusted for reliable, detail focused cleaning services across Southern Utah.
       </p>
     </div>
@@ -152,10 +177,10 @@ function Frame11() {
 function Frame13() {
   return (
     <div className="flex flex-col gap-[12px] items-center lg:items-start text-center lg:text-left leading-[1.5] relative w-full">
-      <p className="font-['Noto_Sans:Bold',sans-serif] font-bold relative text-[#fdfdfd] text-[20px] tracking-tight w-full">
+      <p className="font-bold relative text-[#fdfdfd] text-[20px] tracking-tight w-full">
         Same Day Airbnb Turnovers
       </p>
-      <p className="font-['Noto_Sans:Regular',sans-serif] font-normal relative text-[#ddd] text-[16px] md:text-[18px] w-full">
+      <p className="font-normal relative text-[#ddd] text-[16px] md:text-[18px] w-full">
         Fast, dependable cleans that keep rentals guest ready.
       </p>
     </div>
@@ -181,10 +206,10 @@ function Frame12() {
 function Frame17() {
   return (
     <div className="flex flex-col gap-[12px] items-center lg:items-start text-center lg:text-left leading-[1.5] relative w-full">
-      <p className="font-['Noto_Sans:Bold',sans-serif] font-bold relative text-[#fdfdfd] text-[20px] tracking-tight w-full">
+      <p className="font-bold relative text-[#fdfdfd] text-[20px] tracking-tight w-full">
         Luxury Home Specialists
       </p>
-      <p className="font-['Noto_Sans:Regular',sans-serif] font-normal relative text-[#ddd] text-[16px] md:text-[18px] w-full">
+      <p className="font-normal relative text-[#ddd] text-[16px] md:text-[18px] w-full">
         Professional care for luxury homes and upscale spaces.
       </p>
     </div>
@@ -239,20 +264,20 @@ function Hero() {
 function Frame18() {
   return (
     <div className="flex flex-col gap-4 items-center justify-center relative w-full max-w-[1062px] text-center px-6">
-      <p className="font-['Noto_Sans:SemiBold',sans-serif] font-semibold leading-[1.1] text-[#1e1e1e] text-3xl md:text-4xl lg:text-[48px] tracking-tight w-full text-balance">
+      <p className="font-semibold leading-[1.1] text-[#1e1e1e] text-3xl md:text-4xl lg:text-[48px] tracking-tight w-full text-balance">
         Professional Cleaning Services
       </p>
-      <p className="font-['Noto_Sans:Medium',sans-serif] font-medium leading-[1.5] text-[#5b5b5b] text-lg lg:text-[18px] w-full">
+      <p className="font-medium leading-[1.5] text-[#5b5b5b] text-lg lg:text-[18px] w-full">
         Tailored solutions for every cleaning need
       </p>
     </div>
   );
 }
 
-function Frame20() {
+function Frame20({ imageSrc }) {
   return (
     <div className="relative w-full lg:w-1/2 min-h-[300px] lg:min-h-[480px]">
-      <img alt="" className="absolute inset-0 size-full object-cover" src={imgFrame19} />
+      <img alt="" className="absolute inset-0 size-full object-cover" src={imageSrc} />
     </div>
   );
 }
@@ -272,61 +297,78 @@ function CheckListItem({ text }) {
   return (
     <div className="flex gap-[12px] items-center relative w-full">
       <CheckIcon />
-      <p className="font-['Noto_Sans:Medium',sans-serif] font-medium leading-[1.5] text-[#5b5b5b] text-[16px] tracking-[0.08px]">
+      <p className="font-medium leading-[1.5] text-[#5b5b5b] text-[16px] tracking-[0.08px]">
         {text}
       </p>
     </div>
   );
 }
 
-function Frame24() {
+function ServiceCardWrapper({ children, index }) {
+  const { ref, isVisible } = useScrollReveal();
+  
+  // Calculate top offset for the sticky stacking effect based on the card's index
+  const baseTop = 40; // Starting offset from the top
+  const step = 30; // How much lower each subsequent card sticks
+  
   return (
-    <div className="flex flex-col gap-6 lg:gap-[24px] items-start relative w-full lg:w-1/2 p-6 lg:p-12 bg-[#fdfdfd]">
-      <div className="flex flex-col gap-4 items-start w-full">
-        <p className="font-['Noto_Sans:SemiBold',sans-serif] font-semibold leading-[1.3] text-[#1e1e1e] text-2xl lg:text-[32px] tracking-tight">
-          Luxury Housekeeping
-        </p>
-        <p className="font-['Noto_Sans:Medium',sans-serif] font-medium leading-[1.5] text-[#5b5b5b] text-[16px]">
-          Routine housekeeping services for luxury and high performance homes.
-        </p>
+    <div
+      ref={ref}
+      className={`sticky w-full mb-[15vh] lg:mb-[20vh] transition-all duration-1000 ease-out transform
+        ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-32'}
+      `}
+      style={{ 
+        top: `${baseTop + index * step}px`, 
+        zIndex: index * 10 
+      }}
+    >
+      <div className="bg-[#fdfdfd] flex flex-col lg:flex-row overflow-hidden rounded-[20px] drop-shadow-xl w-full h-full border border-black/5">
+        {children}
       </div>
-      <div className="flex flex-col gap-[12px] items-start w-full">
-        <CheckListItem text="Weekly cleaning" />
-        <CheckListItem text="Biweekly cleaning" />
-        <CheckListItem text="Monthly cleaning" />
-        <CheckListItem text="Kitchen and bathroom sanitizing" />
-        <CheckListItem text="Detailed home refreshes" />
-      </div>
-      <a href="https://cal.com/mahe-bandara-dvwcve/luxury-housekeeping" target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
-        <p className="font-['Noto_Sans:Medium',sans-serif] font-medium text-[#fdfdfd] text-[14px]">
-          Book a Cleaning
-        </p>
-      </a>
     </div>
   );
 }
 
 function Frame19() {
   return (
-    <div className="bg-[#fdfdfd] flex flex-col lg:flex-row overflow-hidden rounded-[20px] drop-shadow-xl w-full relative h-full">
-      <Frame20 />
-      <Frame24 />
-    </div>
+    <>
+      <Frame20 imageSrc={imgFrame19} />
+      <div className="flex flex-col gap-6 lg:gap-[24px] items-start relative w-full lg:w-1/2 p-6 lg:p-12 bg-[#fdfdfd]">
+        <div className="flex flex-col gap-4 items-start w-full">
+          <p className="font-semibold leading-[1.3] text-[#1e1e1e] text-2xl lg:text-[32px] tracking-tight">
+            Luxury Housekeeping
+          </p>
+          <p className="font-medium leading-[1.5] text-[#5b5b5b] text-[16px]">
+            Routine housekeeping services for luxury and high performance homes.
+          </p>
+        </div>
+        <div className="flex flex-col gap-[12px] items-start w-full">
+          <CheckListItem text="Weekly cleaning" />
+          <CheckListItem text="Biweekly cleaning" />
+          <CheckListItem text="Monthly cleaning" />
+          <CheckListItem text="Kitchen and bathroom sanitizing" />
+          <CheckListItem text="Detailed home refreshes" />
+        </div>
+        <a href={`${BOOKING_LINK}/luxury-housekeeping`} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
+          <p className="font-medium text-[#fdfdfd] text-[14px]">
+            Book a Cleaning
+          </p>
+        </a>
+      </div>
+    </>
   );
 }
 
 function Frame31() {
   return (
-    <div className="bg-[#fdfdfd] flex flex-col lg:flex-row overflow-hidden rounded-[20px] drop-shadow-xl w-full relative h-full">
-      <div className="relative w-full lg:w-1/2 min-h-[300px] lg:min-h-[480px]">
-        <img alt="" className="absolute inset-0 size-full object-cover" src={imgFrame20} />
-      </div>
+    <>
+      <Frame20 imageSrc={imgFrame20} />
       <div className="flex flex-col gap-6 lg:gap-[24px] items-start relative w-full lg:w-1/2 p-6 lg:p-12 bg-[#fdfdfd]">
         <div className="flex flex-col gap-4 items-start w-full">
-          <p className="font-['Noto_Sans:SemiBold',sans-serif] font-semibold leading-[1.3] text-[#1e1e1e] text-2xl lg:text-[32px] tracking-tight">
+          <p className="font-semibold leading-[1.3] text-[#1e1e1e] text-2xl lg:text-[32px] tracking-tight">
             Airbnb Turnovers
           </p>
-          <p className="font-['Noto_Sans:Medium',sans-serif] font-medium leading-[1.5] text-[#5b5b5b] text-[16px]">
+          <p className="font-medium leading-[1.5] text-[#5b5b5b] text-[16px]">
             Reliable Airbnb and vacation rental cleaning throughout Southern Utah.
           </p>
         </div>
@@ -337,28 +379,26 @@ function Frame31() {
           <CheckListItem text="Guest ready presentation" />
           <CheckListItem text="Reliable scheduling" />
         </div>
-        <a href="https://cal.com/mahe-bandara-dvwcve/airbnb-turnovers" target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
-          <p className="font-['Noto_Sans:Medium',sans-serif] font-medium text-[#fdfdfd] text-[14px]">
+        <a href={`${BOOKING_LINK}/airbnb-turnovers`} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
+          <p className="font-medium text-[#fdfdfd] text-[14px]">
             Book a Cleaning
           </p>
         </a>
       </div>
-    </div>
+    </>
   );
 }
 
 function Frame42() {
   return (
-    <div className="bg-[#fdfdfd] flex flex-col lg:flex-row overflow-hidden rounded-[20px] drop-shadow-xl w-full relative h-full">
-      <div className="relative w-full lg:w-1/2 min-h-[300px] lg:min-h-[480px]">
-        <img alt="" className="absolute inset-0 size-full object-cover" src={imgFrame21} />
-      </div>
+    <>
+      <Frame20 imageSrc={imgFrame21} />
       <div className="flex flex-col gap-6 lg:gap-[24px] items-start relative w-full lg:w-1/2 p-6 lg:p-12 bg-[#fdfdfd]">
         <div className="flex flex-col gap-4 items-start w-full">
-          <p className="font-['Noto_Sans:SemiBold',sans-serif] font-semibold leading-[1.3] text-[#1e1e1e] text-2xl lg:text-[32px] tracking-tight">
+          <p className="font-semibold leading-[1.3] text-[#1e1e1e] text-2xl lg:text-[32px] tracking-tight">
             Move In / Move Out Cleans
           </p>
-          <p className="font-['Noto_Sans:Medium',sans-serif] font-medium leading-[1.5] text-[#5b5b5b] text-[16px]">
+          <p className="font-medium leading-[1.5] text-[#5b5b5b] text-[16px]">
             Detailed cleaning services for homes, apartments, and rental properties during transitions.
           </p>
         </div>
@@ -369,28 +409,26 @@ function Frame42() {
           <CheckListItem text="Floor cleaning" />
           <CheckListItem text="Full property refresh" />
         </div>
-        <a href="https://cal.com/mahe-bandara-dvwcve/move-in-move-out-cleans" target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
-          <p className="font-['Noto_Sans:Medium',sans-serif] font-medium text-[#fdfdfd] text-[14px]">
+        <a href={`${BOOKING_LINK}/move-in-move-out-cleans`} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
+          <p className="font-medium text-[#fdfdfd] text-[14px]">
             Book a Cleaning
           </p>
         </a>
       </div>
-    </div>
+    </>
   );
 }
 
 function Frame52() {
   return (
-    <div className="bg-[#fdfdfd] flex flex-col lg:flex-row overflow-hidden rounded-[20px] drop-shadow-xl w-full relative h-full">
-      <div className="relative w-full lg:w-1/2 min-h-[300px] lg:min-h-[480px]">
-        <img alt="" className="absolute inset-0 size-full object-cover" src={imgFrame22} />
-      </div>
+    <>
+      <Frame20 imageSrc={imgFrame22} />
       <div className="flex flex-col gap-6 lg:gap-[24px] items-start relative w-full lg:w-1/2 p-6 lg:p-12 bg-[#fdfdfd]">
         <div className="flex flex-col gap-4 items-start w-full">
-          <p className="font-['Noto_Sans:SemiBold',sans-serif] font-semibold leading-[1.3] text-[#1e1e1e] text-2xl lg:text-[32px] tracking-tight">
+          <p className="font-semibold leading-[1.3] text-[#1e1e1e] text-2xl lg:text-[32px] tracking-tight">
             Commercial Cleaning
           </p>
-          <p className="font-['Noto_Sans:Medium',sans-serif] font-medium leading-[1.5] text-[#5b5b5b] text-[16px]">
+          <p className="font-medium leading-[1.5] text-[#5b5b5b] text-[16px]">
             Professional maintenance cleaning for offices and commercial spaces.
           </p>
         </div>
@@ -400,28 +438,26 @@ function Frame52() {
           <CheckListItem text="Sanitized workspaces" />
           <CheckListItem text="Professional presentation" />
         </div>
-        <a href="https://cal.com/mahe-bandara-dvwcve/commercial-cleaning" target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
-          <p className="font-['Noto_Sans:Medium',sans-serif] font-medium text-[#fdfdfd] text-[14px]">
+        <a href={`${BOOKING_LINK}/commercial-cleaning`} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
+          <p className="font-medium text-[#fdfdfd] text-[14px]">
             Book a Cleaning
           </p>
         </a>
       </div>
-    </div>
+    </>
   );
 }
 
 function Frame61() {
   return (
-    <div className="bg-[#fdfdfd] flex flex-col lg:flex-row overflow-hidden rounded-[20px] drop-shadow-xl w-full relative h-full">
-      <div className="relative w-full lg:w-1/2 min-h-[300px] lg:min-h-[480px]">
-        <img alt="" className="absolute inset-0 size-full object-cover" src={imgFrame23} />
-      </div>
+    <>
+      <Frame20 imageSrc={imgFrame23} />
       <div className="flex flex-col gap-6 lg:gap-[24px] items-start relative w-full lg:w-1/2 p-6 lg:p-12 bg-[#fdfdfd]">
         <div className="flex flex-col gap-4 items-start w-full">
-          <p className="font-['Noto_Sans:SemiBold',sans-serif] font-semibold leading-[1.3] text-[#1e1e1e] text-2xl lg:text-[32px] tracking-tight">
+          <p className="font-semibold leading-[1.3] text-[#1e1e1e] text-2xl lg:text-[32px] tracking-tight">
             Deep Cleaning
           </p>
-          <p className="font-['Noto_Sans:Medium',sans-serif] font-medium leading-[1.5] text-[#5b5b5b] text-[16px]">
+          <p className="font-medium leading-[1.5] text-[#5b5b5b] text-[16px]">
             Seasonal and detailed deep cleaning services designed to refresh your home.
           </p>
         </div>
@@ -432,24 +468,24 @@ function Frame61() {
           <CheckListItem text="Detailed kitchens" />
           <CheckListItem text="Bathroom deep scrubbing" />
         </div>
-        <a href="https://cal.com/mahe-bandara-dvwcve/deep-cleaning" target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
-          <p className="font-['Noto_Sans:Medium',sans-serif] font-medium text-[#fdfdfd] text-[14px]">
+        <a href={`${BOOKING_LINK}/deep-cleaning`} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[10px] mt-4 rounded-[50px]">
+          <p className="font-medium text-[#fdfdfd] text-[14px]">
             Book a Cleaning
           </p>
         </a>
       </div>
-    </div>
+    </>
   );
 }
 
 function Frame26() {
   return (
-    <div className="flex flex-col gap-[24px] lg:gap-12 items-start relative w-full max-w-[1280px]">
-      <div className="sticky top-[20px] lg:top-[80px] w-full z-10"><Frame19 /></div>
-      <div className="sticky top-[40px] lg:top-[100px] w-full z-20"><Frame31 /></div>
-      <div className="sticky top-[60px] lg:top-[120px] w-full z-30"><Frame42 /></div>
-      <div className="sticky top-[80px] lg:top-[140px] w-full z-40"><Frame52 /></div>
-      <div className="sticky top-[100px] lg:top-[160px] w-full z-50"><Frame61 /></div>
+    <div className="flex flex-col items-start relative w-full max-w-[1280px]">
+      <ServiceCardWrapper index={0}><Frame19 /></ServiceCardWrapper>
+      <ServiceCardWrapper index={1}><Frame31 /></ServiceCardWrapper>
+      <ServiceCardWrapper index={2}><Frame42 /></ServiceCardWrapper>
+      <ServiceCardWrapper index={3}><Frame52 /></ServiceCardWrapper>
+      <ServiceCardWrapper index={4}><Frame61 /></ServiceCardWrapper>
     </div>
   );
 }
@@ -490,7 +526,7 @@ function Frame71() {
         </div>
       </div>
       <div className="flex flex-col gap-[24px] items-start relative w-full lg:w-1/2">
-        <p className="font-['Noto_Sans:SemiBold',sans-serif] font-semibold leading-[1.1] text-[#1e1e1e] text-3xl md:text-4xl lg:text-[48px] tracking-tight text-balance">
+        <p className="font-semibold leading-[1.1] text-[#1e1e1e] text-3xl md:text-4xl lg:text-[48px] tracking-tight text-balance">
           Airbnb Hosts: We Handle the Turnovers
         </p>
         <div className="flex flex-col gap-[16px] text-[#5b5b5b] text-[16px] md:text-[18px]">
@@ -506,15 +542,15 @@ function Frame71() {
            <CheckListItem text="Guest ready presentation" />
            <CheckListItem text="Professional attention to detail" />
         </div>
-        <p className="font-['Noto_Sans:Medium',sans-serif] font-medium text-[#5b5b5b] text-[16px] md:text-[18px] mt-2">
+        <p className="font-medium text-[#5b5b5b] text-[16px] md:text-[18px] mt-2">
           Trusted by Airbnb and vacation rental hosts across Southern Utah.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 mt-2 w-full sm:w-auto">
-          <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[12px] rounded-[50px] w-full sm:w-auto">
-            <p className="font-['Inter:Medium',sans-serif] font-medium text-[#fdfdfd] text-[16px]">Book a Cleaning</p>
+          <a href={`${BOOKING_LINK}/airbnb-turnovers`} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors drop-shadow-md flex items-center justify-center px-[32px] py-[12px] rounded-[50px] w-full sm:w-auto">
+            <p className="font-medium text-[#fdfdfd] text-[16px]">Book a Cleaning</p>
           </a>
           <div className="bg-[#f4f4f4] border border-[#1e1e1e] cursor-pointer hover:bg-gray-200 transition-colors flex items-center justify-center px-[32px] py-[12px] rounded-[50px] w-full sm:w-auto">
-            <p className="font-['Inter:Medium',sans-serif] font-medium text-[#1e1e1e] text-[16px]">Get a Free Quote</p>
+            <p className="font-medium text-[#1e1e1e] text-[16px]">Get a Free Quote</p>
           </div>
         </div>
       </div>
@@ -537,10 +573,10 @@ function BeforeAfter() {
     <div className="bg-white relative w-full overflow-hidden" data-name="Before After">
       <div className="flex flex-col gap-12 lg:gap-[48px] items-center px-6 py-12 lg:px-[80px] lg:py-[100px] w-full max-w-[1440px] mx-auto">
         <div className="flex flex-col gap-[24px] items-center text-center w-full max-w-[1000px]">
-          <p className="font-['Noto_Sans:SemiBold',sans-serif] font-semibold leading-[1.1] text-[#1e1e1e] text-3xl md:text-4xl lg:text-[48px] tracking-tight">
+          <p className="font-semibold leading-[1.1] text-[#1e1e1e] text-3xl md:text-4xl lg:text-[48px] tracking-tight">
             See The Difference
           </p>
-          <p className="font-['Noto_Sans:Medium',sans-serif] font-medium leading-[1.5] text-[#5b5b5b] text-[16px] md:text-[18px]">
+          <p className="font-medium leading-[1.5] text-[#5b5b5b] text-[16px] md:text-[18px]">
             From vacation rentals to luxury homes, we help transform spaces into spotless, refreshed environments.
           </p>
         </div>
@@ -568,12 +604,12 @@ function ReviewCard({ type, location, text }) {
           </svg>
         ))}
       </div>
-      <p className="font-['Inter:Regular',sans-serif] font-normal leading-relaxed text-[#4a5565] text-[14px] flex-1">
+      <p className="font-normal leading-relaxed text-[#4a5565] text-[14px] flex-1">
         "{text}"
       </p>
       <div className="border-t border-[#f3f4f6] pt-4 w-full flex flex-col mt-2">
-        <p className="font-['Inter:Semi_Bold',sans-serif] font-semibold text-[#423e3d] text-[14px]">{type}</p>
-        <p className="font-['Inter:Regular',sans-serif] font-normal text-[#99a1af] text-[12px]">{location}</p>
+        <p className="font-semibold text-[#423e3d] text-[14px]">{type}</p>
+        <p className="font-normal text-[#99a1af] text-[12px]">{location}</p>
       </div>
     </div>
   );
@@ -584,10 +620,10 @@ function Reviews() {
     <div className="bg-[#f5f4f4] relative w-full overflow-hidden" data-name="Reviews">
       <div className="flex flex-col gap-12 lg:gap-[48px] items-center px-6 py-12 lg:px-[80px] lg:py-[100px] w-full max-w-[1440px] mx-auto">
         <div className="flex flex-col gap-[24px] items-center text-center w-full max-w-[800px]">
-          <p className="font-['Noto_Sans:SemiBold',sans-serif] font-semibold leading-[1.1] text-[#1e1e1e] text-3xl md:text-4xl lg:text-[48px] tracking-tight">
+          <p className="font-semibold leading-[1.1] text-[#1e1e1e] text-3xl md:text-4xl lg:text-[48px] tracking-tight">
             What Clients Are Saying
           </p>
-          <p className="font-['Noto_Sans:Medium',sans-serif] font-medium leading-[1.5] text-[#5b5b5b] text-[16px] md:text-[18px]">
+          <p className="font-medium leading-[1.5] text-[#5b5b5b] text-[16px] md:text-[18px]">
             Trusted by homeowners, Airbnb hosts, and businesses across Southern Utah for reliable, detail focused cleaning services.
           </p>
         </div>
@@ -618,10 +654,10 @@ function Reviews1() {
     <div className="bg-white relative w-full overflow-hidden" data-name="Bookings Section">
       <div className="flex flex-col gap-12 lg:gap-[48px] items-center px-6 py-12 lg:px-[80px] lg:py-[100px] w-full max-w-[1440px] mx-auto">
         <div className="flex flex-col gap-[24px] items-center text-center w-full max-w-[800px]">
-          <p className="font-['Noto_Sans:SemiBold',sans-serif] font-semibold leading-[1.1] text-[#1e1e1e] text-3xl md:text-4xl lg:text-[48px] tracking-tight">
+          <p className="font-semibold leading-[1.1] text-[#1e1e1e] text-3xl md:text-4xl lg:text-[48px] tracking-tight">
             Book Your Cleaning Service
           </p>
-          <p className="font-['Noto_Sans:Medium',sans-serif] font-medium leading-[1.5] text-[#5b5b5b] text-[16px] md:text-[18px]">
+          <p className="font-medium leading-[1.5] text-[#5b5b5b] text-[16px] md:text-[18px]">
             Ready for a cleaner, calmer, and guest ready space?
           </p>
         </div>
@@ -642,7 +678,7 @@ function LocationPill({ name }) {
           <path d={svgPaths.p360410f0} stroke="#1E1E1E" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" transform="translate(9,3)" />
         </svg>
       </div>
-      <p className="font-['Inter:Medium',sans-serif] font-medium text-[#1e1e1e] text-[14px] md:text-[16px]">
+      <p className="font-medium text-[#1e1e1e] text-[14px] md:text-[16px]">
         {name}
       </p>
     </div>
@@ -658,10 +694,10 @@ function Areas() {
       </div>
       <div className="flex flex-col items-center px-6 py-16 lg:px-[80px] lg:py-[100px] relative w-full max-w-[1440px] mx-auto text-center lg:text-left">
         <div className="flex flex-col gap-8 lg:gap-[24px] items-center lg:items-start w-full max-w-[1000px]">
-          <p className="font-['Noto_Sans:SemiBold',sans-serif] font-semibold leading-[1.1] text-[#fdfdfd] text-3xl md:text-4xl lg:text-[48px] tracking-tight">
+          <p className="font-semibold leading-[1.1] text-[#fdfdfd] text-3xl md:text-4xl lg:text-[48px] tracking-tight">
             Proudly Serving Southern Utah
           </p>
-          <p className="font-['Noto_Sans:Medium',sans-serif] font-medium text-[#f2f2f2] text-[16px] md:text-[18px]">
+          <p className="font-medium text-[#f2f2f2] text-[16px] md:text-[18px]">
             Southern Utah Housekeeping proudly provides cleaning services throughout:
           </p>
           <div className="flex flex-wrap gap-4 justify-center lg:justify-start w-full mt-4">
@@ -692,7 +728,7 @@ function Footer() {
             <div className="relative rounded-full size-[50px] bg-white">
               <img alt="" className="absolute inset-0 object-cover rounded-full size-full" src={imgFrame3} />
             </div>
-            <p className="font-['Inter:Regular',sans-serif] font-normal leading-relaxed text-[14px] text-white/50 w-full max-w-[250px]">
+            <p className="font-normal leading-relaxed text-[14px] text-white/50 w-full max-w-[250px]">
               Luxury housekeeping and Airbnb turnover services in Southern Utah.
             </p>
             {/* Socials */}
@@ -711,8 +747,8 @@ function Footer() {
 
           {/* Col 2 */}
           <div className="flex flex-col gap-5 items-start">
-            <p className="font-['Inter:Semi_Bold',sans-serif] font-semibold text-[12px] text-white/40 uppercase tracking-widest">Quick Links</p>
-            <div className="flex flex-col gap-3 font-['Inter:Medium',sans-serif] font-medium text-[14px] text-white/50">
+            <p className="font-semibold text-[12px] text-white/40 uppercase tracking-widest">Quick Links</p>
+            <div className="flex flex-col gap-3 font-medium text-[14px] text-white/50">
               <p className="cursor-pointer hover:text-white transition-colors">Home</p>
               <p className="cursor-pointer hover:text-white transition-colors">Services</p>
               <p className="cursor-pointer hover:text-white transition-colors">Reviews</p>
@@ -723,8 +759,8 @@ function Footer() {
 
           {/* Col 3 */}
           <div className="flex flex-col gap-5 items-start">
-            <p className="font-['Inter:Semi_Bold',sans-serif] font-semibold text-[12px] text-white/40 uppercase tracking-widest">Services</p>
-            <div className="flex flex-col gap-3 font-['Inter:Medium',sans-serif] font-medium text-[14px] text-white/50">
+            <p className="font-semibold text-[12px] text-white/40 uppercase tracking-widest">Services</p>
+            <div className="flex flex-col gap-3 font-medium text-[14px] text-white/50">
               <p className="cursor-pointer hover:text-white transition-colors">Housekeeping</p>
               <p className="cursor-pointer hover:text-white transition-colors">Airbnb Cleaning</p>
               <p className="cursor-pointer hover:text-white transition-colors">Deep Cleaning</p>
@@ -735,14 +771,14 @@ function Footer() {
 
           {/* Col 4 */}
           <div className="flex flex-col gap-5 items-start">
-            <p className="font-['Inter:Semi_Bold',sans-serif] font-semibold text-[12px] text-white/40 uppercase tracking-widest">Contact Info</p>
+            <p className="font-semibold text-[12px] text-white/40 uppercase tracking-widest">Contact Info</p>
             <div className="flex flex-col gap-4 text-[14px] text-white/50">
                <p>📍 Cedar City, UT, US</p>
                <p>📞 +1 000 000 0000</p>
                <p>✉️ southernutahhousekeeping@gmail.com</p>
             </div>
             <div className="bg-white/5 border border-white/10 rounded-xl p-4 mt-2 w-full max-w-[260px]">
-               <p className="font-['Inter:Semi_Bold',sans-serif] font-semibold text-[12px] text-white/40 mb-3">Working Hours</p>
+               <p className="font-semibold text-[12px] text-white/40 mb-3">Working Hours</p>
                <div className="flex flex-col gap-2 text-[12px] text-white/60">
                   <div className="flex justify-between"><span>Mon - Fri</span><span>8:00 AM - 6:00 PM</span></div>
                   <div className="flex justify-between"><span>Saturday</span><span>8:00 AM - 3:00 PM</span></div>
@@ -770,7 +806,7 @@ function Footer() {
 
 export default function SouthernUtahHousekeeping() {
   return (
-    <div className="bg-white flex flex-col items-center relative w-full overflow-hidden" data-name="Southern Utah Housekeeping">
+    <div className="bg-white flex flex-col items-center relative w-full overflow-hidden font-['Inter',sans-serif]" data-name="Southern Utah Housekeeping">
       <Hero />
       <Services />
       <Airbnb />
