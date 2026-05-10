@@ -28,7 +28,7 @@ function useScrollReveal() {
           observer.unobserve(entry.target);
         }
       },
-      { threshold: 0.15 } // Triggers when 15% of the card is visible
+      { threshold: 0.15 }
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
@@ -91,7 +91,7 @@ function Frame6() {
 function Frame8() {
   return (
     <div className="flex flex-col sm:flex-row gap-4 lg:gap-[24px] items-start relative w-full sm:w-auto">
-      <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors w-full sm:w-auto drop-shadow-md flex gap-[10px] items-center justify-center px-[32px] py-[12px] relative rounded-[50px]" data-name="Button">
+      <a href={`${BOOKING_LINK}/cleaning`} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] cursor-pointer hover:bg-black transition-colors w-full sm:w-auto drop-shadow-md flex gap-[10px] items-center justify-center px-[32px] py-[12px] relative rounded-[50px]" data-name="Button">
         <p className="font-normal leading-[1.5] relative text-[#fdfdfd] text-[16px] tracking-[0.08px]">
           Book a Cleaning
         </p>
@@ -309,17 +309,18 @@ function ServiceCardWrapper({ children, index }) {
   
   // Calculate top offset for the sticky stacking effect based on the card's index
   const baseTop = 40; // Starting offset from the top
-  const step = 30; // How much lower each subsequent card sticks
+  const step = 24; // How much lower each subsequent card sticks - UPDATED to 24px as requested
   
   return (
     <div
       ref={ref}
-      className={`sticky w-full mb-[15vh] lg:mb-[20vh] transition-all duration-1000 ease-out transform
+      className={`sticky w-full transition-all duration-1000 ease-out transform
         ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-32'}
       `}
       style={{ 
         top: `${baseTop + index * step}px`, 
-        zIndex: index * 10 
+        zIndex: index * 10,
+        marginBottom: '40vh' // added space between cards
       }}
     >
       <div className="bg-[#fdfdfd] flex flex-col lg:flex-row overflow-hidden rounded-[20px] drop-shadow-xl w-full h-full border border-black/5">
@@ -480,7 +481,7 @@ function Frame61() {
 
 function Frame26() {
   return (
-    <div className="flex flex-col items-start relative w-full max-w-[1280px]">
+    <div className="flex flex-col items-start relative w-full max-w-[1280px] pb-[10vh]">
       <ServiceCardWrapper index={0}><Frame19 /></ServiceCardWrapper>
       <ServiceCardWrapper index={1}><Frame31 /></ServiceCardWrapper>
       <ServiceCardWrapper index={2}><Frame42 /></ServiceCardWrapper>
