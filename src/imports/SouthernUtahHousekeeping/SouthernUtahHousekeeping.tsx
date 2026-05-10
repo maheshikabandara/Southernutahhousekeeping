@@ -15,28 +15,6 @@ import imgAreas from "./8fd18d26ce2cf7c41459f9f71d7faa1b26bd5e0f.png";
 
 const BOOKING_LINK = "https://cal.com/mahe-bandara-dvwcve";
 
-// --- Custom Hook for Scroll Animations ---
-function useScrollReveal() {
-  const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.15 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
-  return { ref, isVisible };
-}
-
 // --- Service Card Wrapper with Stacking & Scaling Logic ---
 function ServiceCardWrapper({ children, index }) {
   const containerRef = useRef(null);
@@ -60,7 +38,6 @@ function ServiceCardWrapper({ children, index }) {
         setTransformStyles({ scale: 1, opacity: 1 });
       }
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -68,7 +45,6 @@ function ServiceCardWrapper({ children, index }) {
   return (
     <div
       ref={containerRef}
-      // Mobile වලදී mb-40 ලබා දුන්නේ Booking button එක පේන්න ඕන නිසා
       className="sticky w-full mb-40 lg:mb-[25vh]" 
       style={{
         top: `${window.innerWidth < 768 ? 20 + index * 15 : 80 + index * 32}px`,
@@ -90,31 +66,35 @@ function ServiceCardWrapper({ children, index }) {
   );
 }
 
-// --- Navigation ---
-function Navbar() {
+// --- Shared Components ---
+function CheckListItem({ text }) {
   return (
-    <nav className="bg-[#1e1e1e] w-full max-w-[1280px] mx-auto flex items-center justify-between p-2 lg:p-3 relative rounded-[50px] shadow-lg">
-      <div className="relative rounded-full shrink-0 size-10 lg:size-[50px]">
-        <img alt="logo" className="absolute inset-0 object-cover rounded-full size-full" src={imgFrame3} />
+    <div className="flex gap-[12px] items-center w-full">
+      <div className="relative shrink-0 size-[20px] lg:size-[24px]">
+        <svg className="block size-full" fill="none" viewBox="0 0 32 32">
+          <circle cx="16" cy="16" r="12" stroke="#9E9491" strokeWidth="2" />
+          <path d="M11.5 16.5L14.25 19.25L20.5 13" stroke="#9E9491" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+        </svg>
       </div>
-      <div className="hidden md:flex font-normal gap-[25px] items-center text-white text-[18px]">
-        <p className="cursor-pointer hover:text-gray-300">Home</p>
-        <p className="cursor-pointer hover:text-gray-300">Services</p>
-        <p className="cursor-pointer hover:text-gray-300">Reviews</p>
-      </div>
-      <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" className="bg-[#f4f4f4] hover:bg-white px-6 lg:px-8 py-2 lg:py-3 rounded-[50px] text-[#1e1e1e] text-sm lg:text-[16px] font-bold">
-        Book Now
-      </a>
-    </nav>
+      <p className="font-medium text-[#5b5b5b] text-[14px] lg:text-[16px]">{text}</p>
+    </div>
   );
 }
 
-// --- Hero Section ---
+// --- Main Components ---
 function Hero() {
   return (
-    <section className="bg-white relative w-full pt-4 lg:pt-[32px]">
-      <div className="flex flex-col items-center w-full px-6">
-        <Navbar />
+    <section className="bg-white relative w-full pt-4 lg:pt-[32px] px-6">
+      <div className="flex flex-col items-center w-full">
+        <nav className="bg-[#1e1e1e] w-full max-w-[1280px] flex items-center justify-between p-2 lg:p-3 rounded-full shadow-lg mb-10">
+          <img src={imgFrame3} className="size-10 lg:size-[50px] rounded-full" alt="logo" />
+          <div className="hidden md:flex gap-6 text-white text-sm font-medium">
+            <p className="cursor-pointer hover:text-gray-300">Home</p>
+            <p className="cursor-pointer hover:text-gray-300">Services</p>
+            <p className="cursor-pointer hover:text-gray-300">Reviews</p>
+          </div>
+          <a href={BOOKING_LINK} className="bg-white text-black px-6 py-2 rounded-full text-xs font-bold uppercase">Book Now</a>
+        </nav>
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-[24px] items-center py-10 lg:py-[80px] w-full max-w-[1280px]">
           <div className="flex flex-col gap-[24px] items-center lg:items-start text-center lg:text-left w-full lg:w-[628px]">
             <div className="bg-[#e1dedd] px-4 py-2 rounded-[50px]">
@@ -123,57 +103,17 @@ function Hero() {
             <h1 className="font-bold leading-[1.1] text-[#1e1e1e] text-4xl lg:text-[72px] tracking-tight">Luxury Housekeeping & Airbnb Turnovers</h1>
             <p className="text-[#5b5b5b] text-lg lg:text-[24px]">5 star rated cleaning for luxury homes and vacation rentals in Southern Utah</p>
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-              <a href={`${BOOKING_LINK}/cleaning`} className="bg-[#1e1e1e] text-white px-8 py-4 rounded-full font-bold text-center">Book a Cleaning</a>
+              <a href={`${BOOKING_LINK}/cleaning`} className="bg-[#1e1e1e] text-white px-8 py-4 rounded-full font-bold shadow-lg">Book a Cleaning</a>
               <button className="bg-[#f4f4f4] border border-[#1e1e1e] px-8 py-4 rounded-full font-bold">Get a Free Quote</button>
             </div>
           </div>
           <div className="relative w-full lg:w-1/2 aspect-square max-w-[500px]">
             <div className="absolute inset-0 bg-[#9e9491] translate-x-3 translate-y-3 rounded-2xl" />
-            <img alt="Hero" className="relative w-full h-full object-cover rounded-2xl border border-black/5 shadow-xl" src={imgFrame5} />
+            <img src={imgFrame5} className="relative w-full h-full object-cover rounded-2xl border border-black/5 shadow-xl" alt="hero" />
           </div>
         </div>
       </div>
     </section>
-  );
-}
-
-// --- Service Item Component ---
-function CheckListItem({ text }) {
-  return (
-    <div className="flex gap-[12px] items-center w-full">
-      <div className="relative shrink-0 size-[20px] lg:size-[24px]">
-        <svg className="block size-full" fill="none" viewBox="0 0 32 32">
-          <path d="M11.5 16.5L14.25 19.25L20.5 13" stroke="#9E9491" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
-          <circle cx="16" cy="16" r="12" stroke="#9E9491" strokeWidth="2" />
-        </svg>
-      </div>
-      <p className="font-medium text-[#5b5b5b] text-[14px] lg:text-[16px]">{text}</p>
-    </div>
-  );
-}
-
-// --- Service Card Content ---
-function ServiceCard({ image, title, desc, checks, linkSuffix }) {
-  return (
-    <>
-      <div className="relative w-full lg:w-1/2 h-[240px] lg:h-auto lg:min-h-[480px]">
-        <img alt={title} className="absolute inset-0 size-full object-cover" src={image} />
-      </div>
-      <div className="flex flex-col gap-4 lg:gap-[24px] items-start relative w-full lg:w-1/2 p-6 lg:p-12 bg-[#fdfdfd]">
-        <div className="flex flex-col gap-2 lg:gap-4 items-start w-full">
-          <h3 className="font-semibold leading-[1.3] text-[#1e1e1e] text-xl lg:text-[32px] tracking-tight">{title}</h3>
-          <p className="font-medium leading-[1.5] text-[#5b5b5b] text-[14px] lg:text-[16px]">{desc}</p>
-        </div>
-        <div className="flex flex-col gap-[8px] lg:gap-[12px] items-start w-full">
-          {checks.map((check, i) => <CheckListItem key={i} text={check} />)}
-        </div>
-        <div className="mt-4 lg:mt-6 w-full">
-          <a href={`${BOOKING_LINK}/${linkSuffix}`} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] hover:bg-black transition-colors px-8 py-3 lg:py-4 rounded-[50px] text-[#fdfdfd] text-[14px] font-bold shadow-md inline-block w-full lg:w-auto text-center">
-            Book a Cleaning
-          </a>
-        </div>
-      </div>
-    </>
   );
 }
 
@@ -193,9 +133,17 @@ function Services() {
         <p className="text-lg text-[#5b5b5b]">Tailored solutions for every cleaning need</p>
       </div>
       <div className="w-full max-w-[1000px] mx-auto">
-        {servicesData.map((service, index) => (
-          <ServiceCardWrapper key={index} index={index}>
-            <ServiceCard {...service} />
+        {servicesData.map((s, i) => (
+          <ServiceCardWrapper key={i} index={i}>
+            <div className="w-full lg:w-1/2 h-[240px] lg:h-auto"><img src={s.image} className="w-full h-full object-cover" alt={s.title} /></div>
+            <div className="p-8 lg:p-12 flex flex-col gap-6 lg:w-1/2">
+              <h3 className="text-2xl lg:text-3xl font-bold">{s.title}</h3>
+              <p className="text-sm lg:text-base text-[#5b5b5b]">{s.desc}</p>
+              <div className="flex flex-col gap-3">
+                {s.checks.map((c, j) => <CheckListItem key={j} text={c} />)}
+              </div>
+              <a href={`${BOOKING_LINK}/${s.linkSuffix}`} className="bg-[#1e1e1e] text-white py-3 rounded-full text-center font-bold mt-4 shadow-md lg:w-fit lg:px-10">Book a Cleaning</a>
+            </div>
           </ServiceCardWrapper>
         ))}
       </div>
@@ -203,49 +151,57 @@ function Services() {
   );
 }
 
-// --- Airbnb Section ---
 function Airbnb() {
   return (
-    <section className="bg-[#f5f4f4] py-16 lg:py-[100px] px-6">
+    <section className="bg-white py-16 lg:py-[100px] px-6">
       <div className="max-w-[1280px] mx-auto flex flex-col lg:flex-row gap-12 items-center">
         <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-1/2">
-          <img src={imgFrame6} className="w-full sm:w-1/2 h-[300px] lg:h-[400px] object-cover rounded-2xl" alt="Airbnb 1" />
+          <img src={imgFrame6} className="w-full sm:w-1/2 h-[300px] lg:h-[600px] object-cover rounded-[32px]" alt="Airbnb 1" />
           <div className="flex flex-col gap-4 w-full sm:w-1/2">
-            <img src={imgFrame7} className="h-40 lg:h-[192px] object-cover rounded-2xl" alt="Airbnb 2" />
-            <img src={imgFrame8} className="flex-1 h-40 lg:h-auto object-cover rounded-2xl" alt="Airbnb 3" />
+            <img src={imgFrame7} className="h-48 lg:h-[285px] object-cover rounded-[32px]" alt="Airbnb 2" />
+            <img src={imgFrame8} className="flex-1 h-48 lg:h-[285px] object-cover rounded-[32px]" alt="Airbnb 3" />
           </div>
         </div>
-        <div className="lg:w-1/2 text-center lg:text-left">
-          <h2 className="text-3xl lg:text-5xl font-bold mb-6 text-[#1e1e1e]">Airbnb Hosts: We Handle the Turnovers</h2>
-          <p className="text-[#5b5b5b] mb-8 lg:text-lg leading-relaxed">Managing a vacation rental takes time. Cleaning should not add more stress. We provide reliable Airbnb turnover cleaning services.</p>
-          <a href={BOOKING_LINK} className="bg-[#1e1e1e] text-white px-8 py-4 rounded-full font-bold inline-block hover:bg-black transition-colors">Book a Cleaning</a>
+        <div className="lg:w-1/2 flex flex-col gap-6">
+          <h2 className="text-4xl lg:text-5xl font-bold text-[#1e1e1e]">Airbnb Hosts: We Handle the Turnovers</h2>
+          <div className="text-[#5b5b5b] flex flex-col gap-4 text-base lg:text-lg leading-relaxed">
+            <p>Managing a vacation rental takes time. Cleaning should not add more stress.</p>
+            <p>Southern Utah Housekeeping provides reliable Airbnb turnover cleaning services that help keep your property guest ready and professionally maintained.</p>
+            <p className="font-semibold mt-2">Our Airbnb cleaning services include:</p>
+            <div className="flex flex-col gap-3">
+              {["Same day turnover cleans", "Fresh linen replacement", "Restocking essentials", "Reliable scheduling", "Guest ready presentation", "Professional attention to detail"].map((item, i) => (
+                <CheckListItem key={i} text={item} />
+              ))}
+            </div>
+            <p className="font-medium mt-4">Trusted by Airbnb and vacation rental hosts across Southern Utah.</p>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-4 mt-2">
+            <a href={BOOKING_LINK} className="bg-[#1e1e1e] text-white px-10 py-4 rounded-full font-bold shadow-lg text-center">Book a Cleaning</a>
+            <button className="bg-white border border-[#1e1e1e] px-10 py-4 rounded-full font-bold text-center">Get a Free Quote</button>
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-// --- Reviews ---
-function Reviews() {
+function Areas() {
+  const locations = ["St. George", "Ivins", "Washington", "Cedar City", "Santa Clara", "Middleton", "Surrounding Southern Utah Areas"];
   return (
-    <section className="bg-[#f5f4f4] py-12 lg:py-[100px] px-6">
-      <div className="max-w-[1280px] mx-auto">
-        <h2 className="text-center font-semibold text-3xl md:text-5xl mb-12">What Clients Are Saying</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            { loc: "St. George", type: "Airbnb Host", text: "The turnovers are always on time, the property looks incredible, and our guests constantly mention how clean everything feels." },
-            { loc: "Ivins", type: "Homeowner", text: "Professional, reliable, and extremely detailed. Our home always feels fresh and peaceful after every cleaning." },
-            { loc: "Cedar City", type: "Homeowner", text: "We booked a deep clean before moving into our new home and were genuinely impressed. Every room looked spotless." }
-          ].map((rev, i) => (
-            <div key={i} className="bg-white p-8 rounded-[24px] shadow-sm border border-black/5">
-              <div className="flex gap-1 mb-4">
-                {[...Array(5)].map((_, j) => <span key={j} className="text-yellow-400">★</span>)}
-              </div>
-              <p className="italic text-[#4a5565] mb-6">"{rev.text}"</p>
-              <div className="border-t pt-4">
-                <p className="font-bold text-[#1e1e1e]">{rev.type}</p>
-                <p className="text-sm text-gray-400">{rev.loc}</p>
-              </div>
+    <section className="relative py-24 lg:py-32 px-6 overflow-hidden flex flex-col items-center">
+      <img src={imgAreas} className="absolute inset-0 w-full h-full object-cover" alt="Areas" />
+      <div className="absolute inset-0 bg-black/60" />
+      <div className="relative z-10 text-center flex flex-col items-center gap-8 max-w-[900px]">
+        <h2 className="text-4xl lg:text-6xl font-bold text-white tracking-tight">Proudly Serving Southern Utah</h2>
+        <p className="text-white/90 text-lg lg:text-xl font-medium">Southern Utah Housekeeping proudly provides cleaning services throughout</p>
+        <div className="flex flex-wrap justify-center gap-4 mt-4">
+          {locations.map((loc, i) => (
+            <div key={i} className="bg-white/95 backdrop-blur-sm border border-white/20 px-8 py-3 rounded-full flex items-center gap-3 shadow-xl transition-transform hover:scale-105">
+              <svg className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span className="text-[#1e1e1e] font-bold text-sm lg:text-base">{loc}</span>
             </div>
           ))}
         </div>
@@ -254,74 +210,55 @@ function Reviews() {
   );
 }
 
-// --- Areas ---
-function Areas() {
-  return (
-    <section className="relative py-20 px-6 text-white overflow-hidden">
-      <img alt="Service Areas" className="absolute inset-0 size-full object-cover z-0" src={imgAreas} />
-      <div className="absolute inset-0 bg-black/70 z-10" />
-      <div className="relative z-20 max-w-[1280px] mx-auto text-center lg:text-left">
-        <h2 className="text-4xl md:text-6xl font-bold mb-6">Proudly Serving Southern Utah</h2>
-        <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-          {["St. George", "Ivins", "Washington", "Cedar City", "Santa Clara"].map((city) => (
-            <span key={city} className="bg-white/10 backdrop-blur-md border border-white/20 px-6 py-2 rounded-full font-medium">{city}</span>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// --- Footer ---
 function Footer() {
   return (
-    <footer className="bg-[#1e1e1e] text-white/50 py-16 px-6">
+    <footer className="bg-[#1e1e1e] py-16 px-8 text-white/50 border-t border-white/5">
       <div className="max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
         <div>
-          <img src={imgFrame3} className="w-12 h-12 rounded-full mb-6 mx-auto lg:mx-0 border-2 border-white/20" alt="Logo" />
-          <p className="text-sm">Luxury housekeeping and Airbnb turnover services in Southern Utah.</p>
+          <img src={imgFrame3} className="size-12 rounded-full mb-6 border border-white/10 shadow-xl" alt="Logo" />
+          <p className="text-sm leading-relaxed">Luxury housekeeping and Airbnb turnover services in Southern Utah.</p>
         </div>
         <div>
-          <h4 className="text-white font-bold mb-6 uppercase text-xs tracking-widest">Quick Links</h4>
-          <ul className="flex flex-col gap-4 text-sm">
-            <li className="hover:text-white cursor-pointer transition-colors">Home</li>
-            <li className="hover:text-white cursor-pointer transition-colors">Services</li>
-            <li className="hover:text-white cursor-pointer transition-colors">Reviews</li>
-          </ul>
+          <h4 className="text-white font-bold uppercase text-[10px] tracking-widest mb-6">Quick Links</h4>
+          <div className="flex flex-col gap-4 text-sm">
+            <p className="hover:text-white cursor-pointer transition-colors">Home</p>
+            <p className="hover:text-white cursor-pointer transition-colors">Services</p>
+            <p className="hover:text-white cursor-pointer transition-colors">Reviews</p>
+          </div>
         </div>
         <div>
-          <h4 className="text-white font-bold mb-6 uppercase text-xs tracking-widest">Hours</h4>
-          <p className="text-sm">Mon - Fri: 8AM - 6PM</p>
-          <p className="text-sm">Sat: 8AM - 3PM</p>
-          <p className="text-sm text-red-400">Sun: Closed</p>
+          <h4 className="text-white font-bold uppercase text-[10px] tracking-widest mb-6">Working Hours</h4>
+          <div className="flex flex-col gap-2 text-xs">
+            <p className="flex justify-between"><span>Mon - Fri</span><span>8:00 AM - 6:00 PM</span></p>
+            <p className="flex justify-between"><span>Saturday</span><span>8:00 AM - 3:00 PM</span></p>
+            <p className="flex justify-between text-red-400"><span>Sunday</span><span>Closed</span></p>
+          </div>
         </div>
         <div>
-          <h4 className="text-white font-bold mb-6 uppercase text-xs tracking-widest">Contact</h4>
+          <h4 className="text-white font-bold uppercase text-[10px] tracking-widest mb-6">Contact</h4>
           <p className="text-sm mb-2">📍 Cedar City, UT, US</p>
           <p className="text-sm">✉️ southernutahhousekeeping@gmail.com</p>
         </div>
       </div>
       <div className="max-w-[1280px] mx-auto border-t border-white/10 mt-16 pt-8 text-center text-[10px]">
-        <p>© 2026 Southern Utah Housekeeping. Designed by maheux.me</p>
+        <p>© 2026 Southern Utah Housekeeping. Website Designed by maheux.me</p>
       </div>
     </footer>
   );
 }
 
-// --- Final Component ---
 export default function SouthernUtahHousekeeping() {
   return (
-    <main className="bg-white min-h-screen font-['Inter',sans-serif] selection:bg-black selection:text-white">
+    <main className="bg-white min-h-screen font-['Inter',sans-serif]">
       <Hero />
       <Services />
       <Airbnb />
       <section className="bg-white py-16 lg:py-[100px] px-6 text-center">
-        <h2 className="text-3xl lg:text-5xl font-bold mb-12">See The Difference</h2>
-        <div className="max-w-[1280px] mx-auto rounded-3xl overflow-hidden shadow-2xl">
-          <img src={imgFrame33} className="w-full h-auto" alt="Transformation" />
+        <h2 className="text-3xl lg:text-5xl font-bold mb-12 tracking-tight">See The Difference</h2>
+        <div className="max-w-[1280px] mx-auto rounded-[40px] overflow-hidden shadow-2xl">
+          <img src={imgFrame33} className="w-full" alt="Before/After" />
         </div>
       </section>
-      <Reviews />
       <Areas />
       <Footer />
     </main>
