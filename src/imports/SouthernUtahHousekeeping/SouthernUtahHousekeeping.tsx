@@ -15,7 +15,7 @@ import imgAreas from "./8fd18d26ce2cf7c41459f9f71d7faa1b26bd5e0f.png";
 
 const BOOKING_LINK = "https://cal.com/mahe-bandara-dvwcve";
 
-// --- Shared Section Layout ---
+// --- Shared Section Wrapper ---
 function SectionLayout({ children, className = "", id = "" }) {
   return (
     <section id={id} className={`w-full flex justify-center ${className}`}>
@@ -26,7 +26,7 @@ function SectionLayout({ children, className = "", id = "" }) {
   );
 }
 
-// --- Service Card Wrapper with Stacking & Scaling Logic ---
+// --- Service Card Wrapper with Stacking Fix ---
 function ServiceCardWrapper({ children, index }) {
   const containerRef = useRef(null);
   const [transformStyles, setTransformStyles] = useState({ scale: 1, opacity: 1 });
@@ -92,42 +92,49 @@ function CheckListItem({ text }) {
   );
 }
 
+// --- Navigation ---
+function Navbar() {
+  return (
+    <nav className="bg-[#1e1e1e] w-full flex items-center justify-between p-2 lg:p-3 rounded-full shadow-lg mb-10">
+      <img src={imgFrame3} className="size-10 lg:size-[50px] rounded-full" alt="logo" />
+      <div className="hidden md:flex gap-8 text-white text-sm lg:text-base font-medium">
+        <p className="cursor-pointer hover:text-gray-300 transition-colors">Home</p>
+        <p className="cursor-pointer hover:text-gray-300 transition-colors">Services</p>
+        <p className="cursor-pointer hover:text-gray-300 transition-colors">Reviews</p>
+        <p className="cursor-pointer hover:text-gray-300 transition-colors">Service Areas</p>
+      </div>
+      <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" className="bg-white text-black px-6 py-2 rounded-full text-xs lg:text-sm font-bold uppercase">Book Now</a>
+    </nav>
+  );
+}
+
 // --- Hero Section ---
 function Hero() {
   return (
     <SectionLayout className="bg-white pt-4 lg:pt-[32px]">
-      <nav className="bg-[#1e1e1e] w-full flex items-center justify-between p-2 lg:p-3 rounded-full shadow-lg mb-10">
-        <img src={imgFrame3} className="size-10 lg:size-[50px] rounded-full" alt="logo" />
-        <div className="hidden md:flex gap-8 text-white text-sm lg:text-base font-medium">
-          <p className="cursor-pointer hover:text-gray-300 transition-colors">Home</p>
-          <p className="cursor-pointer hover:text-gray-300 transition-colors">Services</p>
-          <p className="cursor-pointer hover:text-gray-300 transition-colors">Reviews</p>
-          <p className="cursor-pointer hover:text-gray-300 transition-colors">Service Areas</p>
-        </div>
-        <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" className="bg-white text-black px-6 py-2 rounded-full text-xs lg:text-sm font-bold uppercase">Book Now</a>
-      </nav>
+      <Navbar />
       <div className="flex flex-col lg:flex-row gap-12 lg:gap-[48px] items-center py-10 lg:py-[80px]">
         <div className="flex flex-col gap-[24px] items-center lg:items-start text-center lg:text-left w-full lg:w-1/2">
           <div className="bg-[#e1dedd] px-4 py-2 rounded-[50px]">
             <p className="text-[#9e9491] text-[10px] lg:text-[14px] tracking-[1.2px] uppercase font-bold">Professional cleaning service in Southern Utah</p>
           </div>
-          <h1 className="font-bold leading-[1.1] text-[#1e1e1e] text-4xl lg:text-[72px] tracking-tight">Luxury Housekeeping & Airbnb Turnovers</h1>
+          <h1 className="font-bold leading-[1.1] text-[#1e1e1e] text-4xl lg:text-[84px] tracking-tight text-balance">Luxury Housekeeping & Airbnb Turnovers</h1>
           <p className="text-[#5b5b5b] text-lg lg:text-[24px] max-w-[500px]">5 star rated cleaning for luxury homes and vacation rentals in Southern Utah</p>
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-            <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] text-white px-8 py-4 rounded-full font-bold shadow-lg text-center">Book a Cleaning</a>
-            <button className="bg-[#f4f4f4] border border-[#1e1e1e] px-8 py-4 rounded-full font-bold">Get a Free Quote</button>
+            <a href={`${BOOKING_LINK}/cleaning`} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] text-white px-8 py-4 rounded-full font-bold shadow-lg text-center">Book a Cleaning</a>
+            <button className="bg-[#f4f4f4] border border-[#1e1e1e] px-8 py-4 rounded-full font-bold text-[#1e1e1e]">Get a Free Quote</button>
           </div>
         </div>
         <div className="relative w-full lg:w-1/2 aspect-square max-w-[500px] lg:max-w-none">
-          <div className="absolute inset-0 bg-[#9e9491] translate-x-3 translate-y-3 lg:translate-x-4 lg:translate-y-4 rounded-2xl" />
-          <img src={imgFrame5} className="relative w-full h-full object-cover rounded-2xl border border-black/5 shadow-xl" alt="hero" />
+          <div className="absolute inset-0 bg-[#9e9491] translate-x-3 translate-y-3 lg:translate-x-4 lg:translate-y-4 rounded-3xl" />
+          <img src={imgFrame5} className="relative w-full h-full object-cover rounded-3xl border border-black/5 shadow-xl" alt="hero" />
         </div>
       </div>
     </SectionLayout>
   );
 }
 
-// --- Service Card ---
+// --- Service Cards ---
 function ServiceCard({ image, title, desc, checks, linkSuffix }) {
   return (
     <>
@@ -143,7 +150,6 @@ function ServiceCard({ image, title, desc, checks, linkSuffix }) {
           {checks.map((check, i) => <CheckListItem key={i} text={check} />)}
         </div>
         <div className="mt-2 w-full lg:w-auto">
-          {/* Button Link Fix: template literal use karala link eka haduwa */}
           <a href={`${BOOKING_LINK}/${linkSuffix}`} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] text-white px-10 py-3 lg:py-4 rounded-full font-bold shadow-lg inline-block text-center hover:bg-black transition-colors w-full lg:w-fit lg:px-12">
             Book a Cleaning
           </a>
@@ -179,6 +185,7 @@ function Services() {
   );
 }
 
+// --- Airbnb Section ---
 function Airbnb() {
   return (
     <SectionLayout className="bg-white py-16 lg:py-[120px]">
@@ -203,7 +210,6 @@ function Airbnb() {
             </div>
           </div>
           <div className="flex flex-col sm:flex-row gap-4 mt-4">
-            {/* Button Link Fix */}
             <a href={`${BOOKING_LINK}/airbnb-turnovers`} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] text-white px-12 py-4 rounded-full font-bold shadow-lg text-center hover:bg-black transition-colors">Book a Cleaning</a>
             <button className="bg-white border border-[#1e1e1e] px-12 py-4 rounded-full font-bold text-center hover:bg-gray-50 transition-colors">Get a Free Quote</button>
           </div>
@@ -213,6 +219,7 @@ function Airbnb() {
   );
 }
 
+// --- Reviews ---
 function Reviews() {
   return (
     <SectionLayout className="bg-[#f5f4f4] py-16 lg:py-24">
@@ -239,6 +246,7 @@ function Reviews() {
   );
 }
 
+// --- Areas ---
 function Areas() {
   const locations = ["St. George", "Ivins", "Washington", "Cedar City", "Santa Clara", "Middleton", "Surrounding Southern Utah Areas"];
   return (
@@ -246,8 +254,8 @@ function Areas() {
       <img src={imgAreas} className="absolute inset-0 w-full h-full object-cover" alt="Areas" />
       <div className="absolute inset-0 bg-black/65" />
       <div className="relative z-10 text-center flex flex-col items-center gap-8 max-w-[1000px] w-full">
-        <h2 className="text-4xl lg:text-7xl font-bold text-white tracking-tight">Proudly Serving Southern Utah</h2>
-        <p className="text-white/95 text-lg lg:text-2xl font-medium">Southern Utah Housekeeping proudly provides cleaning services throughout</p>
+        <h2 className="text-4xl lg:text-7xl font-bold text-white tracking-tight text-center">Proudly Serving Southern Utah</h2>
+        <p className="text-white/95 text-lg lg:text-2xl font-medium text-center">Southern Utah Housekeeping proudly provides cleaning services throughout</p>
         <div className="flex flex-wrap justify-center gap-4 lg:gap-6 mt-4 w-full">
           {locations.map((loc, i) => (
             <div key={i} className="bg-white/95 backdrop-blur-sm px-8 py-3 lg:px-10 lg:py-4 rounded-full flex items-center gap-3 shadow-2xl transition-all hover:scale-105">
@@ -264,11 +272,12 @@ function Areas() {
   );
 }
 
+// --- Footer ---
 function Footer() {
   return (
     <footer className="bg-[#1e1e1e] py-16 lg:py-24 text-white/50">
-      <div className="max-w-[1280px] mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-4 gap-12 lg:gap-16">
-        <div className="flex flex-col gap-6">
+      <div className="max-w-[1280px] mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-4 gap-12 lg:gap-16 text-center md:text-left">
+        <div className="flex flex-col gap-6 items-center md:items-start">
           <img src={imgFrame3} className="size-12 lg:size-16 rounded-full border-2 border-white/10 shadow-xl" alt="Logo" />
           <p className="text-sm lg:text-base leading-relaxed">Luxury housekeeping and Airbnb turnover services in Southern Utah.</p>
         </div>
@@ -305,7 +314,20 @@ function Footer() {
   );
 }
 
+// --- MAIN APPLICATION COMPONENT ---
 export default function SouthernUtahHousekeeping() {
+  
+  useEffect(() => {
+    // CRISP AGENT INITIALIZATION
+    window.$crisp = [];
+    window.CRISP_WEBSITE_ID = "ffbe7cc3-1458-494d-a288-1ee87373457e";
+    const script = document.createElement("script");
+    script.src = "https://client.crisp.chat/l.js";
+    script.async = 1;
+    document.head.appendChild(script);
+    return () => { document.head.removeChild(script); };
+  }, []);
+
   return (
     <main className="bg-white min-h-screen font-['Inter',sans-serif] selection:bg-black selection:text-white">
       <Hero />
