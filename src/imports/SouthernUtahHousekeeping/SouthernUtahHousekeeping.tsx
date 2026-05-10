@@ -312,12 +312,12 @@ export default function SouthernUtahHousekeeping() {
       <Services />
       <Airbnb />
       <Reviews />
-      <SectionLayout className="bg-white py-16 lg:py-[120px] text-center">
+      {/* <SectionLayout className="bg-white py-16 lg:py-[120px] text-center">
         <h2 className="text-4xl lg:text-6xl font-bold mb-12 lg:mb-20 tracking-tight text-[#1e1e1e]">See The Difference</h2>
         <div className="w-full rounded-[40px] overflow-hidden shadow-2xl border border-black/5">
           <img src={imgFrame33} className="w-full transition-transform hover:scale-[1.02] duration-1000" alt="Difference" />
         </div>
-      </SectionLayout>
+      </SectionLayout> */}
       <Areas />
       <Footer />
     </main>
