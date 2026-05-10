@@ -15,28 +15,6 @@ import imgAreas from "./8fd18d26ce2cf7c41459f9f71d7faa1b26bd5e0f.png";
 
 const BOOKING_LINK = "https://cal.com/mahe-bandara-dvwcve";
 
-// --- Custom Hook for Scroll Animations ---
-function useScrollReveal() {
-  const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.15 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
-  return { ref, isVisible };
-}
-
 // --- Service Card Wrapper with Stacking & Scaling Logic ---
 function ServiceCardWrapper({ children, index }) {
   const containerRef = useRef(null);
@@ -45,18 +23,16 @@ function ServiceCardWrapper({ children, index }) {
   useEffect(() => {
     const handleScroll = () => {
       if (!containerRef.current) return;
-
       const rect = containerRef.current.getBoundingClientRect();
-      const stickyTop = window.innerWidth < 768 ? 60 : 80;
+      const isMobile = window.innerWidth < 768;
+      const stickyTop = isMobile ? 20 : 80;
 
       if (rect.top <= stickyTop) {
         const scrolledPastTop = Math.abs(rect.top - stickyTop);
         const scrollRange = 400;
-        
-        const scaleLimit = window.innerWidth < 768 ? 0.95 : 0.9;
+        const scaleLimit = isMobile ? 0.96 : 0.9; 
         const newScale = Math.max(scaleLimit, 1 - (scrolledPastTop / (scrollRange * 10)));
         const newOpacity = Math.max(0.8, 1 - (scrolledPastTop / (scrollRange * 5)));
-        
         setTransformStyles({ scale: newScale, opacity: newOpacity });
       } else {
         setTransformStyles({ scale: 1, opacity: 1 });
@@ -70,9 +46,10 @@ function ServiceCardWrapper({ children, index }) {
   return (
     <div
       ref={containerRef}
-      className="sticky w-full mb-20 lg:mb-[25vh]" 
+      // Mobile වලදී mb-40 ලබා දුන්නේ ඊළඟ card එක එන්න කලින් button එක පෙනෙන්න ඉඩ තියන්නයි
+      className="sticky w-full mb-40 lg:mb-[25vh]" 
       style={{
-        top: `${window.innerWidth < 768 ? 60 + index * 20 : 80 + index * 32}px`,
+        top: `${window.innerWidth < 768 ? 20 + index * 15 : 80 + index * 32}px`,
         zIndex: index + 1,
         transition: "transform 0.1s linear, opacity 0.1s linear"
       }}
@@ -91,64 +68,46 @@ function ServiceCardWrapper({ children, index }) {
   );
 }
 
-// --- Navigation Components ---
-function Frame2() {
+// --- Navigation ---
+function Navbar() {
   return (
-    <div className="relative rounded-full shrink-0 size-[50px]">
-      <img alt="" className="absolute inset-0 object-cover pointer-events-none rounded-full size-full" src={imgFrame3} />
-    </div>
-  );
-}
-
-function Frame() {
-  return (
-    <div className="hidden md:flex font-normal gap-[25px] items-center leading-[1.5] relative shrink-0 text-[18px] text-white tracking-[0.09px]">
-      <p className="relative shrink-0 cursor-pointer hover:text-gray-300 transition-colors">Home</p>
-      <p className="relative shrink-0 cursor-pointer hover:text-gray-300 transition-colors">Services</p>
-      <p className="relative shrink-0 cursor-pointer hover:text-gray-300 transition-colors">Reviews</p>
-      <p className="relative shrink-0 cursor-pointer hover:text-gray-300 transition-colors">Service Areas</p>
-    </div>
-  );
-}
-
-function Frame1() {
-  return (
-    <nav className="bg-[#1e1e1e] w-full max-w-[1280px] mx-auto flex items-center justify-between p-3 relative rounded-[50px] shadow-lg">
-      <Frame2 />
-      <Frame />
-      <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" className="bg-[#f4f4f4] cursor-pointer hover:bg-gray-200 transition-colors flex gap-[10px] items-center justify-center px-[32px] py-[12px] relative rounded-[50px] shrink-0">
-        <p className="font-normal leading-[1.5] relative shrink-0 text-[#1e1e1e] text-[16px] tracking-[0.08px]">Book Now</p>
+    <nav className="bg-[#1e1e1e] w-full max-w-[1280px] mx-auto flex items-center justify-between p-2 lg:p-3 relative rounded-[50px] shadow-lg">
+      <div className="relative rounded-full shrink-0 size-10 lg:size-[50px]">
+        <img alt="logo" className="absolute inset-0 object-cover rounded-full size-full" src={imgFrame3} />
+      </div>
+      <div className="hidden md:flex font-normal gap-[25px] items-center text-white text-[18px]">
+        <p className="cursor-pointer hover:text-gray-300 transition-colors">Home</p>
+        <p className="cursor-pointer hover:text-gray-300 transition-colors">Services</p>
+        <p className="cursor-pointer hover:text-gray-300 transition-colors">Reviews</p>
+      </div>
+      <a href={BOOKING_LINK} target="_blank" rel="noopener noreferrer" className="bg-[#f4f4f4] hover:bg-white px-6 lg:px-8 py-2 lg:py-3 rounded-[50px] text-[#1e1e1e] text-sm lg:text-[16px] font-bold">
+        Book Now
       </a>
     </nav>
   );
 }
 
+// --- Hero Section ---
 function Hero() {
   return (
     <section className="bg-white relative w-full pt-4 lg:pt-[32px]">
-      <div className="flex flex-col items-center overflow-hidden w-full">
-        <Frame1 />
-        <div className="flex flex-col lg:flex-row gap-12 lg:gap-[24px] items-center py-12 lg:py-[80px] px-6 w-full max-w-[1280px]">
-          <div className="flex flex-col gap-[24px] items-start relative w-full lg:w-[628px]">
-            <div className="bg-[#e1dedd] flex items-center justify-center px-4 py-2 relative rounded-[50px]">
-              <p className="font-normal leading-[16px] relative text-[#9e9491] text-[12px] md:text-[14px] tracking-[1.2px] uppercase">Professional cleaning service in Southern Utah</p>
+      <div className="flex flex-col items-center w-full px-6">
+        <Navbar />
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-[24px] items-center py-10 lg:py-[80px] w-full max-w-[1280px]">
+          <div className="flex flex-col gap-[24px] items-center lg:items-start text-center lg:text-left w-full lg:w-[628px]">
+            <div className="bg-[#e1dedd] px-4 py-2 rounded-[50px]">
+              <p className="text-[#9e9491] text-[10px] lg:text-[14px] tracking-[1.2px] uppercase font-bold">Professional cleaning service in Southern Utah</p>
             </div>
-            <h1 className="font-bold leading-[1.1] relative text-[#1e1e1e] text-4xl md:text-5xl lg:text-[72px] tracking-tight text-balance">
-              Luxury Housekeeping & Airbnb Turnovers
-            </h1>
-            <p className="font-normal leading-[1.3] relative text-[#5b5b5b] text-lg md:text-[24px] text-balance">
-              5 star rated cleaning for luxury homes and vacation rentals in Southern Utah
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 lg:gap-[24px] items-start w-full sm:w-auto">
-              <a href={`${BOOKING_LINK}/cleaning`} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] hover:bg-black transition-colors px-[32px] py-[12px] rounded-[50px] text-[#fdfdfd] text-center w-full sm:w-auto">Book a Cleaning</a>
-              <button className="bg-[#f4f4f4] border border-[#1e1e1e] hover:bg-gray-200 transition-colors px-[32px] py-[12px] rounded-[50px] text-[#1e1e1e] w-full sm:w-auto">Get a Free Quote</button>
+            <h1 className="font-bold leading-[1.1] text-[#1e1e1e] text-4xl lg:text-[72px] tracking-tight">Luxury Housekeeping & Airbnb Turnovers</h1>
+            <p className="text-[#5b5b5b] text-lg lg:text-[24px]">5 star rated cleaning for luxury homes and vacation rentals in Southern Utah</p>
+            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+              <a href={`${BOOKING_LINK}/cleaning`} className="bg-[#1e1e1e] text-white px-8 py-4 rounded-full font-bold text-center">Book a Cleaning</a>
+              <button className="bg-[#f4f4f4] border border-[#1e1e1e] px-8 py-4 rounded-full font-bold">Get a Free Quote</button>
             </div>
           </div>
-          <div className="relative w-full lg:w-1/2 aspect-square max-w-[620px]">
-            <div className="absolute inset-0 bg-[#9e9491] translate-x-3 translate-y-3 lg:translate-x-4 lg:translate-y-4 rounded-[20px]" />
-            <div className="relative w-full h-full rounded-[20px] overflow-hidden border border-black/5">
-              <img alt="" className="absolute inset-0 w-full h-full object-cover" src={imgFrame5} />
-            </div>
+          <div className="relative w-full lg:w-1/2 aspect-square max-w-[500px]">
+            <div className="absolute inset-0 bg-[#9e9491] translate-x-3 translate-y-3 rounded-2xl" />
+            <img alt="Hero" className="relative w-full h-full object-cover rounded-2xl border border-black/5 shadow-xl" src={imgFrame5} />
           </div>
         </div>
       </div>
@@ -156,17 +115,17 @@ function Hero() {
   );
 }
 
-// --- Services Components ---
+// --- Service Components ---
 function CheckListItem({ text }) {
   return (
-    <div className="flex gap-[12px] items-center relative w-full">
-      <div className="relative shrink-0 size-[24px]">
+    <div className="flex gap-[12px] items-center w-full">
+      <div className="relative shrink-0 size-[20px] lg:size-[24px]">
         <svg className="block size-full" fill="none" viewBox="0 0 32 32">
           <path d="M11.5 16.5L14.25 19.25L20.5 13" stroke="#9E9491" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
-          <path d={svgPaths.p157b3400} stroke="#9E9491" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" transform="translate(4,4)" />
+          <circle cx="16" cy="16" r="12" stroke="#9E9491" strokeWidth="2" />
         </svg>
       </div>
-      <p className="font-medium leading-[1.5] text-[#5b5b5b] text-[16px] tracking-[0.08px]">{text}</p>
+      <p className="font-medium text-[#5b5b5b] text-[14px] lg:text-[16px]">{text}</p>
     </div>
   );
 }
@@ -174,18 +133,22 @@ function CheckListItem({ text }) {
 function ServiceCard({ image, title, desc, checks, linkSuffix }) {
   return (
     <>
-      <div className="relative w-full lg:w-1/2 min-h-[300px] lg:min-h-[480px]">
-        <img alt="" className="absolute inset-0 size-full object-cover" src={image} />
+      <div className="relative w-full lg:w-1/2 h-[240px] lg:h-auto lg:min-h-[480px]">
+        <img alt={title} className="absolute inset-0 size-full object-cover" src={image} />
       </div>
-      <div className="flex flex-col gap-6 lg:gap-[24px] items-start relative w-full lg:w-1/2 p-6 lg:p-12 bg-[#fdfdfd]">
-        <div className="flex flex-col gap-4 items-start w-full">
-          <h3 className="font-semibold leading-[1.3] text-[#1e1e1e] text-2xl lg:text-[32px] tracking-tight">{title}</h3>
-          <p className="font-medium leading-[1.5] text-[#5b5b5b] text-[16px]">{desc}</p>
+      <div className="flex flex-col gap-4 lg:gap-[24px] items-start relative w-full lg:w-1/2 p-6 lg:p-12 bg-[#fdfdfd]">
+        <div className="flex flex-col gap-2 lg:gap-4 items-start w-full">
+          <h3 className="font-semibold leading-[1.3] text-[#1e1e1e] text-xl lg:text-[32px] tracking-tight">{title}</h3>
+          <p className="font-medium leading-[1.5] text-[#5b5b5b] text-[14px] lg:text-[16px]">{desc}</p>
         </div>
-        <div className="flex flex-col gap-[12px] items-start w-full">
+        <div className="flex flex-col gap-[8px] lg:gap-[12px] items-start w-full">
           {checks.map((check, i) => <CheckListItem key={i} text={check} />)}
         </div>
-        <a href={`${BOOKING_LINK}/${linkSuffix}`} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] hover:bg-black transition-colors px-[32px] py-[10px] mt-4 rounded-[50px] text-[#fdfdfd] text-[14px] font-medium shadow-md">Book a Cleaning</a>
+        <div className="mt-4 lg:mt-6 w-full">
+          <a href={`${BOOKING_LINK}/${linkSuffix}`} target="_blank" rel="noopener noreferrer" className="bg-[#1e1e1e] hover:bg-black transition-colors px-8 py-3 lg:py-4 rounded-[50px] text-[#fdfdfd] text-[14px] font-bold shadow-md inline-block w-full lg:w-auto text-center">
+            Book a Cleaning
+          </a>
+        </div>
       </div>
     </>
   );
@@ -193,188 +156,83 @@ function ServiceCard({ image, title, desc, checks, linkSuffix }) {
 
 function Services() {
   const servicesData = [
-    {
-      title: "Luxury Housekeeping",
-      desc: "Routine housekeeping services for luxury and high performance homes.",
-      image: imgFrame19,
-      linkSuffix: "luxury-housekeeping",
-      checks: ["Weekly cleaning", "Biweekly cleaning", "Monthly cleaning", "Kitchen and bathroom sanitizing", "Detailed home refreshes"]
-    },
-    {
-      title: "Airbnb Turnovers",
-      desc: "Reliable Airbnb and vacation rental cleaning throughout Southern Utah.",
-      image: imgFrame20,
-      linkSuffix: "airbnb-turnovers",
-      checks: ["Same day turnovers", "Linen replacement", "Restocking essentials", "Guest ready presentation", "Reliable scheduling"]
-    },
-    {
-      title: "Move In / Move Out Cleans",
-      desc: "Detailed cleaning services for homes, apartments, and rental properties.",
-      image: imgFrame21,
-      linkSuffix: "move-in-move-out-cleans",
-      checks: ["Deep reset cleans", "Appliance wipe downs", "Bathroom sanitizing", "Floor cleaning", "Full property refresh"]
-    },
-    {
-      title: "Commercial Cleaning",
-      desc: "Professional maintenance cleaning for offices and commercial spaces.",
-      image: imgFrame22,
-      linkSuffix: "commercial-cleaning",
-      checks: ["Flexible scheduling", "Routine maintenance", "Sanitized workspaces", "Professional presentation"]
-    },
-    {
-      title: "Deep Cleaning",
-      desc: "Seasonal and detailed deep cleaning services designed to refresh your home.",
-      image: imgFrame23,
-      linkSuffix: "deep-cleaning",
-      checks: ["Baseboards", "Ceiling fans", "Appliance cleaning", "Detailed kitchens", "Bathroom deep scrubbing"]
-    }
+    { title: "Luxury Housekeeping", desc: "Routine housekeeping services for luxury and high performance homes.", image: imgFrame19, linkSuffix: "luxury-housekeeping", checks: ["Weekly cleaning", "Biweekly cleaning", "Monthly cleaning", "Kitchen and bathroom sanitizing", "Detailed home refreshes"] },
+    { title: "Airbnb Turnovers", desc: "Reliable Airbnb and vacation rental cleaning throughout Southern Utah.", image: imgFrame20, linkSuffix: "airbnb-turnovers", checks: ["Same day turnovers", "Linen replacement", "Restocking essentials", "Guest ready presentation", "Reliable scheduling"] },
+    { title: "Move In / Move Out Cleans", desc: "Detailed cleaning services for homes, apartments, and rental properties.", image: imgFrame21, linkSuffix: "move-in-move-out-cleans", checks: ["Deep reset cleans", "Appliance wipe downs", "Bathroom sanitizing", "Floor cleaning", "Full property refresh"] },
+    { title: "Commercial Cleaning", desc: "Professional maintenance cleaning for offices and commercial spaces.", image: imgFrame22, linkSuffix: "commercial-cleaning", checks: ["Flexible scheduling", "Routine maintenance", "Sanitized workspaces", "Professional presentation"] },
+    { title: "Deep Cleaning", desc: "Seasonal and detailed deep cleaning services designed to refresh your home.", image: imgFrame23, linkSuffix: "deep-cleaning", checks: ["Baseboards", "Ceiling fans", "Appliance cleaning", "Detailed kitchens", "Bathroom deep scrubbing"] }
   ];
 
   return (
     <section className="bg-white py-12 lg:py-[100px] px-6">
-      <div className="flex flex-col gap-12 lg:gap-[60px] items-center max-w-[1280px] mx-auto">
-        <div className="text-center max-w-[800px]">
-          <h2 className="font-semibold text-3xl md:text-5xl tracking-tight text-[#1e1e1e] mb-4">Professional Cleaning Services</h2>
-          <p className="text-lg text-[#5b5b5b]">Tailored solutions for every cleaning need</p>
-        </div>
-        
-        <div className="w-full relative">
-          {servicesData.map((service, index) => (
-            <ServiceCardWrapper key={index} index={index}>
-              <ServiceCard {...service} />
-            </ServiceCardWrapper>
-          ))}
-        </div>
+      <div className="max-w-[1280px] mx-auto text-center mb-16">
+        <h2 className="font-semibold text-3xl lg:text-5xl tracking-tight text-[#1e1e1e] mb-4">Professional Cleaning Services</h2>
+        <p className="text-lg text-[#5b5b5b]">Tailored solutions for every cleaning need</p>
+      </div>
+      <div className="w-full max-w-[1000px] mx-auto">
+        {servicesData.map((service, index) => (
+          <ServiceCardWrapper key={index} index={index}>
+            <ServiceCard {...service} />
+          </ServiceCardWrapper>
+        ))}
       </div>
     </section>
   );
 }
 
-// --- Other Sections ---
+// --- Airbnb Section ---
 function Airbnb() {
   return (
-    <section className="bg-[#f5f4f4] py-12 lg:py-[100px] px-6">
-      <div className="flex flex-col lg:flex-row gap-12 lg:gap-[48px] items-center max-w-[1280px] mx-auto">
+    <section className="bg-[#f5f4f4] py-16 lg:py-[100px] px-6">
+      <div className="max-w-[1280px] mx-auto flex flex-col lg:flex-row gap-12 items-center">
         <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-1/2">
-          <img alt="" className="rounded-[20px] w-full sm:w-1/2 object-cover h-[400px]" src={imgFrame6} />
+          <img src={imgFrame6} className="w-full sm:w-1/2 h-[300px] lg:h-[400px] object-cover rounded-2xl" alt="Airbnb 1" />
           <div className="flex flex-col gap-4 w-full sm:w-1/2">
-            <img alt="" className="rounded-[20px] h-[192px] object-cover" src={imgFrame7} />
-            <img alt="" className="rounded-[20px] flex-1 object-cover min-h-[192px]" src={imgFrame8} />
+            <img src={imgFrame7} className="h-40 lg:h-[192px] object-cover rounded-2xl" alt="Airbnb 2" />
+            <img src={imgFrame8} className="flex-1 h-40 lg:h-auto object-cover rounded-2xl" alt="Airbnb 3" />
           </div>
         </div>
-        <div className="flex flex-col gap-[24px] items-start lg:w-1/2">
-          <h2 className="font-semibold text-3xl md:text-5xl tracking-tight text-[#1e1e1e]">Airbnb Hosts: We Handle the Turnovers</h2>
-          <div className="flex flex-col gap-[16px] text-[#5b5b5b] text-[16px] md:text-[18px]">
-            <p>Managing a vacation rental takes time. Cleaning should not add more stress.</p>
-            <div className="flex flex-col gap-3">
-              {["Same day turnover cleans", "Fresh linen replacement", "Restocking essentials", "Reliable scheduling"].map((text, i) => (
-                <div key={i} className="flex gap-3 items-center">
-                  <div className="size-5 bg-[#9e9491] rounded-full flex items-center justify-center">
-                    <div className="size-2 bg-white rounded-full" />
-                  </div>
-                  <p>{text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-          <a href={`${BOOKING_LINK}/airbnb-turnovers`} className="bg-[#1e1e1e] text-white px-8 py-3 rounded-full hover:bg-black transition-all">Book a Cleaning</a>
+        <div className="lg:w-1/2 text-center lg:text-left">
+          <h2 className="text-3xl lg:text-5xl font-bold mb-6 text-[#1e1e1e]">Airbnb Hosts: We Handle the Turnovers</h2>
+          <p className="text-[#5b5b5b] mb-8 lg:text-lg leading-relaxed">Managing a vacation rental takes time. Cleaning should not add more stress. We provide reliable Airbnb turnover cleaning services.</p>
+          <a href={BOOKING_LINK} className="bg-[#1e1e1e] text-white px-8 py-4 rounded-full font-bold inline-block hover:bg-black transition-colors">Book a Cleaning</a>
         </div>
       </div>
     </section>
   );
 }
 
-function BeforeAfter() {
-  return (
-    <section className="bg-white py-12 lg:py-[100px] px-6">
-      <div className="max-w-[1280px] mx-auto text-center mb-12">
-        <h2 className="font-semibold text-3xl md:text-5xl tracking-tight mb-4">See The Difference</h2>
-        <p className="text-[#5b5b5b]">From vacation rentals to luxury homes, we transform spaces.</p>
-      </div>
-      <div className="max-w-[1280px] mx-auto rounded-2xl overflow-hidden shadow-2xl">
-        <img alt="" className="w-full h-auto" src={imgFrame33} />
-      </div>
-    </section>
-  );
-}
-
-function Reviews() {
-  return (
-    <section className="bg-[#f5f4f4] py-12 lg:py-[100px] px-6">
-      <div className="max-w-[1280px] mx-auto">
-        <h2 className="text-center font-semibold text-3xl md:text-5xl mb-12">What Clients Are Saying</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            { loc: "St. George", type: "Airbnb Host", text: "The turnovers are always on time, the property looks incredible, and our guests constantly mention how clean everything feels." },
-            { loc: "Ivins", type: "Homeowner", text: "Professional, reliable, and extremely detailed. Our home always feels fresh and peaceful after every cleaning." },
-            { loc: "Cedar City", type: "Homeowner", text: "We booked a deep clean before moving into our new home and were genuinely impressed. Every room looked spotless." }
-          ].map((rev, i) => (
-            <div key={i} className="bg-white p-8 rounded-[24px] shadow-sm border border-black/5">
-              <div className="flex gap-1 mb-4">
-                {[...Array(5)].map((_, j) => <span key={j} className="text-yellow-400">★</span>)}
-              </div>
-              <p className="italic text-[#4a5565] mb-6">"{rev.text}"</p>
-              <div className="border-t pt-4">
-                <p className="font-bold text-[#1e1e1e]">{rev.type}</p>
-                <p className="text-sm text-gray-400">{rev.loc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Areas() {
-  return (
-    <section className="relative py-20 px-6 text-white overflow-hidden">
-      <img alt="" className="absolute inset-0 size-full object-cover z-0" src={imgAreas} />
-      <div className="absolute inset-0 bg-black/70 z-10" />
-      <div className="relative z-20 max-w-[1280px] mx-auto text-center lg:text-left">
-        <h2 className="text-4xl md:text-6xl font-bold mb-6">Proudly Serving Southern Utah</h2>
-        <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-          {["St. George", "Ivins", "Washington", "Cedar City", "Santa Clara"].map((city) => (
-            <span key={city} className="bg-white/10 backdrop-blur-md border border-white/20 px-6 py-2 rounded-full">{city}</span>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
+// --- Footer ---
 function Footer() {
   return (
-    <footer className="bg-[#1e1e1e] text-white/50 py-16 px-6">
-      <div className="max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
-        <div className="col-span-1 md:col-span-1">
-          <img src={imgFrame3} className="w-12 h-12 rounded-full mb-6 border-2 border-white/20" alt="Logo" />
+    <footer className="bg-[#1e1e1e] text-white/50 py-16 px-8 text-center lg:text-left">
+      <div className="max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-4 gap-12">
+        <div>
+          <img src={imgFrame3} className="size-12 rounded-full mb-6 mx-auto lg:mx-0 border border-white/10" alt="Logo" />
           <p className="text-sm">Luxury housekeeping and Airbnb turnover services in Southern Utah.</p>
         </div>
         <div>
-          <h4 className="text-white font-bold mb-6 uppercase text-xs tracking-widest">Quick Links</h4>
-          <ul className="flex flex-col gap-4 text-sm">
-            <li className="hover:text-white cursor-pointer">Home</li>
-            <li className="hover:text-white cursor-pointer">Services</li>
-            <li className="hover:text-white cursor-pointer">Reviews</li>
-          </ul>
+          <h4 className="text-white font-bold uppercase text-xs tracking-widest mb-6">Quick Links</h4>
+          <div className="flex flex-col gap-3 text-sm">
+            <p className="hover:text-white cursor-pointer transition-colors">Home</p>
+            <p className="hover:text-white cursor-pointer transition-colors">Services</p>
+            <p className="hover:text-white cursor-pointer transition-colors">Reviews</p>
+          </div>
         </div>
         <div>
-          <h4 className="text-white font-bold mb-6 uppercase text-xs tracking-widest">Contact</h4>
+          <h4 className="text-white font-bold uppercase text-xs tracking-widest mb-6">Hours</h4>
+          <p className="text-sm">Mon - Fri: 8AM - 6PM</p>
+          <p className="text-sm">Sat: 8AM - 3PM</p>
+          <p className="text-sm text-red-400">Sun: Closed</p>
+        </div>
+        <div>
+          <h4 className="text-white font-bold uppercase text-xs tracking-widest mb-6">Contact</h4>
           <p className="text-sm mb-2">📍 Cedar City, UT, US</p>
           <p className="text-sm">✉️ southernutahhousekeeping@gmail.com</p>
         </div>
-        <div className="bg-white/5 p-6 rounded-2xl">
-          <h4 className="text-white text-xs font-bold mb-4 uppercase">Hours</h4>
-          <div className="text-xs flex flex-col gap-2">
-            <div className="flex justify-between"><span>Mon - Fri</span><span>8AM - 6PM</span></div>
-            <div className="flex justify-between"><span>Sat</span><span>8AM - 3PM</span></div>
-            <div className="flex justify-between text-red-400"><span>Sun</span><span>Closed</span></div>
-          </div>
-        </div>
       </div>
-      <div className="max-w-[1280px] mx-auto border-t border-white/10 mt-16 pt-8 flex flex-col md:row justify-between items-center text-[10px]">
-        <p>© 2026 Southern Utah Housekeeping. Designed by maheux.me</p>
+      <div className="max-w-[1280px] mx-auto border-t border-white/10 mt-16 pt-8 text-center text-[10px]">
+        <p>© 2026 Southern Utah Housekeeping. Website Designed by maheux.me</p>
       </div>
     </footer>
   );
@@ -386,9 +244,12 @@ export default function SouthernUtahHousekeeping() {
       <Hero />
       <Services />
       <Airbnb />
-      <BeforeAfter />
-      <Reviews />
-      <Areas />
+      <section className="bg-white py-16 lg:py-[100px] px-6 text-center">
+        <h2 className="text-3xl lg:text-5xl font-bold mb-12">See The Difference</h2>
+        <div className="max-w-[1280px] mx-auto rounded-3xl overflow-hidden shadow-2xl">
+          <img src={imgFrame33} className="w-full h-auto" alt="Transformation" />
+        </div>
+      </section>
       <Footer />
     </main>
   );
